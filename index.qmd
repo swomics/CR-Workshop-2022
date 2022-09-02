@@ -2,7 +2,6 @@
 title: "Welcome to the 2022 Genomics workshop"
 ---
 
-
 During this course we aim to cover some important bioinformatic methods and give you the following skills and knowledge:
 
 1.  You will understand the importance of sampling and experimental design in genome sequencing experiments.
