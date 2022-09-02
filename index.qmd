@@ -9,7 +9,7 @@ title: "¡Bienvenido!"
 During this course we aim to cover some important bioinformatic methods and give you the following skills and knowledge:
 
 1.  You will understand the importance of sampling and experimental design in genome sequencing experiments.
-2.  You will understand the difference between DNA sequencing technologies, their advantages and disadvantages and assess their quality.
+2.  You will understand the difference between DNA sequencing technologies, their advantages and disadvantages and will have some understanding of how to check for problems in your data.
 3.  You will be able to navigate a Unix environment and understand how to access and run various bioinformatics packages.
 4.  You will be able to analyse and annotate a single genomic sequence to facilitate further studies and address specific hypotheses.
 5.  You will be able to compare different species to address specific hypotheses.
