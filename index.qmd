@@ -13,3 +13,5 @@ During this course we aim to cover some important bioinformatic methods and give
 ```{r}
 1 + 1
 ```
+
+/

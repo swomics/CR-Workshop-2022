@@ -4,10 +4,20 @@ project:
 website:
   title: "Genomics Workshop 2022"
   navbar:
+    background: primary
+    search: true
     left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
+      - text: "Home"
+        file: index.qmd
+      - text: "Day 1 - Genomics Overview"
+        file: Day1.qmd
+      - text: "Day 2 - Genome Assembly"
+        file: Day2.qmd
+      - text: "Day 3 - Genome Annotation"
+        file: Day3.qmd
+      - text: "Day 4 - Comparative Genomics"
+        file: Day4.qmd
+      - about.qmd       
 
 format:
   html:
