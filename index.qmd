@@ -2,7 +2,7 @@
 title: "Welcome to the 2022 Genomics workshop"
 ---
 
-    ![](map.gif)
+!\[\](map.gif)
 
 During this course we aim to cover some important bioinformatic methods and give you the following skills and knowledge:
 
