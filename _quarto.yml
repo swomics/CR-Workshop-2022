@@ -2,7 +2,7 @@ project:
   type: website
   output-dir: docs
 website:
-  title: "CR_2022"
+  title: "Genomics Workshop 2022"
   navbar:
     left:
       - href: index.qmd
