@@ -1,4 +1,5 @@
 ---
-title: "Day4"
+title: "Day 4 - Comparative Genomics"
+author: "SW"
 editor: visual
 ---

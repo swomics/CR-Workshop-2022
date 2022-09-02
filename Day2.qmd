@@ -1,4 +1,5 @@
 ---
-title: "Day2"
+title: "Day 2 - Genome Assembly"
+author: "SW"
 editor: visual
 ---

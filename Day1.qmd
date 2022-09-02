@@ -1,5 +1,5 @@
 ---
-title: "Day1"
+title: "Day 1 - Genomics Overview"
 author: "SW"
 editor: visual
 ---
