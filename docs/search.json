@@ -19,5 +19,19 @@
     "title": "Day 1 - Genomics Overview",
     "section": "",
     "text": "Coverage"
+  },
+  {
+    "objectID": "k-means/app.html",
+    "href": "k-means/app.html",
+    "title": "Genomics Workshop 2022",
+    "section": "",
+    "text": "title: “Old Faithful”\nformat:\nhtml:\ncode-tools:\nsource: https://github.com/quarto-dev/quarto-web/tree/main/docs/interactive/shiny/_examples/old-faithful/shiny-old-faithful.qmd\nserver: shiny\n---\nData on eruptions of the Old Faithful geyser in Yellowstone National Park,\nWyoming, USA. The data was collected continuously from August 1st until\nAugust 15th, 1985.\n```{r}\nsliderInput(“bins”, “Number of bins:”, min = 1, max = 50, value = 30)\nplotOutput(“distPlot”)\n```\nThe data consists of 299 pairs of measurements, referring to the time interval\nbetween the starts of successive eruptions and the duration of the subsequent\neruption.\nClick the **Code** button above to see the source code for this example.\n```{r}\n#| context: server\noutput$distPlot <- renderPlot({\nx <- faithful[, 2] # Old Faithful Geyser data\nbins <- seq(min(x), max(x), length.out = input$bins + 1)\nhist(x, breaks = bins, col = ‘darkgray’, border = ‘white’)\n})\n```"
+  },
+  {
+    "objectID": "k-means/app_test.html",
+    "href": "k-means/app_test.html",
+    "title": "Genomics Workshop 2022",
+    "section": "",
+    "text": "title: “Old Faithful”\nformat: html\nserver: shiny\n---\n```{r}\nsliderInput(“bins”, “Number of bins:”,\nmin = 1, max = 50, value = 30)\nplotOutput(“distPlot”)\n```\n```{r}\n#| context: server\noutput$distPlot <- renderPlot({\nx <- faithful[, 2] # Old Faithful Geyser data\nbins <- seq(min(x), max(x), length.out = input$bins + 1)\nhist(x, breaks = bins, col = ‘darkgray’, border = ‘white’)\n})\n```"
   }
 ]
