@@ -46,14 +46,14 @@
     "href": "Day1.html#dna-sequence-data-platforms-formats",
     "title": "Day 1 - Genomics Overview",
     "section": "2. DNA sequence data: Platforms & Formats",
-    "text": "2. DNA sequence data: Platforms & Formats\nDNA sequencing technology has been subject to many different fundamental technical advances. Broadly speaking, as of 2022, there are three dominant technologies for whole genome sequencing: Sequencing by synthesis (Illumina), Single molecule real-time (PacBio) and nanopore sensing (Oxfor Nanopore Technologies). The output of these different platforms differ by three key parameters 1) cost per base-pair 2) error-profile and 3) read-length. A recent review of genome assemblies for Lepidopteran genomes suggested that PacBio HiFi data is currently the best performing approach for assembly (cite gigascience kawahara lab). Below you can see an interactive plot of different datasets in the Sequence Read Archive (SRA), highlighting differences in read length produced by the different platforms.\nA comparative overview of different DNA sequencing technologies (restricted to Order:Lepidoptera datasets)"
+    "text": "2. DNA sequence data: Platforms & Formats\nDNA sequencing technology has been subject to many different fundamental technical advances. Broadly speaking, as of 2022, there are three dominant technologies for whole genome sequencing: Sequencing by synthesis (Illumina), Single molecule real-time (PacBio) and nanopore sensing (Oxfor Nanopore Technologies). The output of these different platforms differ by three key parameters 1) cost per base-pair 2) error-profile and 3) read-length.\nBelow you can see an interactive plot of different datasets in the Sequence Read Archive (SRA), highlighting differences in read length produced by the different platforms. A recent review of genome assemblies for Lepidopteran (butterfly/moth) genomes suggested that PacBio HiFi data is currently the best performing approach for assembly (Ellis et al., 2021).\n\nFigure 1: A comparative overview of different DNA sequencing technologies (restricted to Order:Lepidoptera datasets)"
   },
   {
     "objectID": "Day1.html#dna-sequence-data-pre-assembly-qc",
     "href": "Day1.html#dna-sequence-data-pre-assembly-qc",
     "title": "Day 1 - Genomics Overview",
     "section": "3. DNA sequence data: Pre-Assembly QC",
-    "text": "3. DNA sequence data: Pre-Assembly QC\nTBC"
+    "text": "3. DNA sequence data: Pre-Assembly QC\nThe type of sequencing and assembly you may want to do can depend on your study organism. Some species have intrinsically more or less complex genomes. The basis of this complexity is, well… complex! There are a few important considerations that can inform your strategy, but sometimes it is difficult to know what these may be without additional experiment. Some major considerations are; sequencing coverage, ploidy, heterozygosity, repeat density and repeat structure.\nSequencing coverage is the number of times that any given base-pair in your genome appears in your sequencing read data. Put another way, it is the ratio of sequence read data to actual genome size, so if we imagine a 100Mbp haploid (one copy of each chromosome) genome and we have 1Gbp of sequencing data, we would estimate that we have a sequencing coverage of 10. In practice, this estimate is usually roughly accurate for the median coverage value, but due to stochasticity in sequence sampling in combination with sequencing bias, coverage varies according to a distribution.\nOne useful initial QC procedure to follow is to break down sequencing reads into short (for instance 21bp) overlapping substrings called k-mers (in this case we would call them 21-mers) to allow us to get a more accurate assessment of genomic coverage. k-mers are useful because some sequencing reads contain errors (remember that some data types have more than others!). By breaking down reads into sub-strings, we ensure that even when there is an error present in the read, we can still get information from the surrounding error-free sequence."
   },
   {
     "objectID": "Day1.html#dna-sequence-data-assembly",
@@ -67,6 +67,6 @@
     "href": "Day1.html#dna-sequence-data-post-assembly-qc",
     "title": "Day 1 - Genomics Overview",
     "section": "5. DNA sequence data: Post-Assembly QC",
-    "text": "5. DNA sequence data: Post-Assembly QC\nTBC"
+    "text": "5. DNA sequence data: Post-Assembly QC\nTBC\n\nReferences:\nEmily A Ellis, Caroline G Storer, Akito Y Kawahara, De novo genome assemblies of butterflies, GigaScience, Volume 10, Issue 6, June 2021, giab041, https://doi.org/10.1093/gigascience/giab041"
   }
 ]
