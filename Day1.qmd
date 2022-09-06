@@ -93,7 +93,9 @@ One useful initial QC procedure to follow is to break down sequencing reads into
 
 ## 4. DNA sequence data: Assembly
 
-TBC
+![](images/Screenshot%202022-09-06%20at%2017.59.04.png){fig-align="center"}
+
+![](images/Screenshot%202022-09-06%20at%2017.59.17.png){fig-align="center"}
 
 ## 5. DNA sequence data: Post-Assembly QC
 
