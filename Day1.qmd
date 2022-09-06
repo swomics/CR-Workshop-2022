@@ -5,7 +5,7 @@ editor: visual
 output: html_document 
 ---
 
-# Introduction
+## Introduction
 
 Today we will be discussing and performing Genome assembly. Assembly refers to the translation of raw sequencing data into a representation of the source DNA genome. You will learn about the types of data and algorithms you can use to accomplish this, their advantages and disadvantages and how you might accomplish this. Since this is the first day of the workshop, we will also spend some time covering the Unix command line environment and how you can interact with it during this workshop.
 
@@ -19,11 +19,11 @@ Today we will be discussing and performing Genome assembly. Assembly refers to t
 
 5.  DNA sequence data: Post-Assembly QC
 
-# 1. Logging on to the computing environment
+## 1. Logging on to the computing environment
 
 TBC
 
-# 2. DNA sequence data: Platforms & Formats
+## 2. DNA sequence data: Platforms & Formats
 
 DNA sequencing technology has been subject to many different fundamental technical advances. Broadly speaking, as of 2022, there are three dominant technologies for whole genome sequencing: Sequencing by synthesis (Illumina), Single molecule real-time (PacBio) and nanopore sensing (Oxfor Nanopore Technologies). The output of these different platforms differ by three key parameters 1) cost per base-pair 2) error-profile and 3) read-length. A recent review of genome assemblies for Lepidopteran genomes suggested that PacBio HiFi data is currently the best performing approach for assembly (cite gigascience kawahara lab). Below you can see an interactive plot of different datasets in the Sequence Read Archive (SRA), highlighting differences in read length produced by the different platforms.
 
@@ -81,14 +81,14 @@ fig
 
 ```
 
-# 3. DNA sequence data: Pre-Assembly QC 
+## 3. DNA sequence data: Pre-Assembly QC 
 
 TBC
 
-# 4. DNA sequence data: Assembly
+## 4. DNA sequence data: Assembly
 
 TBC
 
-# 5. DNA sequence data: Post-Assembly QC
+## 5. DNA sequence data: Post-Assembly QC
 
 TBC
