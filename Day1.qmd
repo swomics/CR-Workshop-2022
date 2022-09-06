@@ -3,28 +3,58 @@ title: "Day 1 - Genomics Overview"
 author: "SW"
 editor: visual
 output: html_document 
-runtime: shiny
 ---
 
-Coverage
+A comparative overview of different DNA sequencing technologies (restricted to Order:Lepidoptera datasets)
 
-```{r, echo=FALSE}
-library(shiny)
-shinyApp(
+```{r setup, warning=FALSE,echo=FALSE,message=FALSE} 
 
-  ui = fluidPage(
-    selectInput("region", "Region:",
-                choices = colnames(WorldPhones)),
-    plotOutput("phonePlot")
-  ),
+library(plotly)
+library(stringr)
 
-  server = function(input, output) {
-    output$phonePlot = renderPlot({
-      barplot(WorldPhones[,input$region]*1000,
-              ylab = "Number of Telephones", xlab = "Year")
-    })
-  },
 
-  options = list(height = 500)
-)
+df <- read.csv("SraRunInfo.csv",header=T)
+df$year <- gsub("-.*", "", df$ReleaseDate) 
+
+fig <- df %>%
+
+  plot_ly(
+
+    x = ~bases, 
+
+    y = ~avgLength, 
+
+    color = ~Platform, 
+
+    text = ~paste0(ScientificName,"-",Model,"-",Run), 
+
+    hoverinfo = "text",
+
+    type = 'scatter',
+
+    mode = 'markers'
+
+  )
+
+fig <- fig %>% layout(
+
+     yaxis = list(
+
+      type = "log",
+      autorange="off"),
+
+  
+    xaxis = list(
+
+      type = "log",
+      autorange="off"
+
+    )
+
+  )
+
+
+fig
+
+
 ```

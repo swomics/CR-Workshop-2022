@@ -13,9 +13,3 @@ During this course we aim to cover some important bioinformatic methods and give
 3.  You will be able to navigate a Unix environment and understand how to access and run various bioinformatics packages.
 4.  You will be able to analyse and annotate a single genomic sequence to facilitate further studies and address specific hypotheses.
 5.  You will be able to compare different species to address specific hypotheses.
-
-```{r}
-1 + 1
-```
-
-/
