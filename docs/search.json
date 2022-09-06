@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "¡Bienvenido!",
     "section": "",
-    "text": "Welcome to the 2022 Genomics workshop!\nDuring this course we aim to cover some important bioinformatic methods and give you the following skills and knowledge:\n\nYou will understand the importance of sampling and experimental design in genome sequencing experiments.\nYou will understand the difference between DNA sequencing technologies, their advantages and disadvantages and will have some understanding of how to check for problems in your data.\nYou will be able to navigate a Unix environment and understand how to access and run various bioinformatics packages.\nYou will be able to analyse and annotate a single genomic sequence to facilitate further studies and address specific hypotheses.\nYou will be able to compare different species to address specific hypotheses.\n\n\n1 + 1\n\n[1] 2\n\n\n/"
+    "text": "Welcome to the 2022 Genomics workshop!\nby Samuel Whiteford & Stefany Solano-Gonzalez\nDuring this course we aim to cover some important bioinformatic methods and give you the following skills and knowledge:\n\nYou will understand the importance of sampling and experimental design in genome sequencing experiments.\nYou will understand the difference between DNA sequencing technologies, their advantages and disadvantages and will have some understanding of how to check for problems in your data.\nYou will be able to navigate a Unix environment and understand how to access and run various bioinformatics packages.\nYou will be able to analyse and annotate a single genomic sequence to facilitate further studies and address specific hypotheses.\nYou will be able to compare different species to address specific hypotheses."
   },
   {
     "objectID": "about.html",
@@ -18,7 +18,7 @@
     "href": "Day1.html",
     "title": "Day 1 - Genomics Overview",
     "section": "",
-    "text": "Coverage"
+    "text": "1. Logging on to the computing environment\nTBC\n\n\n2. DNA sequence data: Platforms & Formats\nDNA sequencing technology has been subject to many different fundamental technical advances. Broadly speaking, as of 2022, there are three dominant technologies for whole genome sequencing: Sequencing by synthesis (Illumina), Single molecule real-time (PacBio) and nanopore sensing (Oxfor Nanopore Technologies). The output of these different platforms differ by three key parameters 1) cost per base-pair 2) error-profile and 3) read-length. A recent review of genome assemblies for Lepidopteran genomes suggested that PacBio HiFi data is currently the best performing approach for assembly (cite gigascience kawahara lab). Below you can see an interactive plot of different datasets in the Sequence Read Archive (SRA), highlighting differences in read length produced by the different platforms.\nA comparative overview of different DNA sequencing technologies (restricted to Order:Lepidoptera datasets)\n\n\n\n\n\n\n\n\n3. DNA sequence data: Pre-Assembly QC\nTBC\n\n\n4. DNA sequence data: Assembly\nTBC\n\n\n5. DNA sequence data: Post-Assembly QC\nTBC"
   },
   {
     "objectID": "k-means/app.html",
