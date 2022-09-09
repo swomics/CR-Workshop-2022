@@ -9,15 +9,15 @@ output: html_document
 
 Today we will be discussing and performing Genome assembly. Assembly refers to the translation of raw sequencing data into a representation of the source DNA genome. You will learn about the types of data and algorithms you can use to accomplish this, their advantages and disadvantages and how you might accomplish this. Since this is the first day of the workshop, we will also spend some time covering the Unix command line environment and how you can interact with it during this workshop.
 
-1.  Logging on to the computing environment
+[1. Logging on to the computing environment]
 
-2.  DNA sequence data: Platforms & Formats
+[2. DNA sequence data: Platforms & Formats]
 
-3.  DNA sequence data: Pre-Assembly QC
+[3. DNA sequence data: Pre-Assembly QC]
 
-4.  DNA sequence data: Assembly
+[4. DNA sequence data: Assembly]
 
-5.  DNA sequence data: Post-Assembly QC
+[5. DNA sequence data: Post-Assembly QC]
 
 ## 1. Logging on to the computing environment
 
@@ -25,11 +25,11 @@ TBC
 
 ## 2. DNA sequence data: Platforms & Formats
 
-DNA sequencing technology has been subject to many different fundamental technical advances. Broadly speaking, as of 2022, there are three dominant technologies for whole genome sequencing: Sequencing by synthesis (Illumina), Single molecule real-time (PacBio) and nanopore sensing (Oxfor Nanopore Technologies). The output of these different platforms differ by three key parameters 1) cost per base-pair 2) error-profile and 3) read-length.
+At it's core whole genome sequencing is the repeated random sub-sampling of genomic sequence. The data properties of these sub-samples (called sequencing "reads") depends on the technology used to generate them. DNA sequencing technology has been subject to many different fundamental technical advances. Broadly speaking, as of 2022, there are three dominant systems: Sequencing by synthesis (Illumina), Single molecule real-time (PacBio) and nanopore sensing (Oxford Nanopore Technologies). The output of these different platforms differ by three key parameters 1) cost per base-pair 2) error-profile and 3) read-length.
 
-Below you can see an interactive plot of different datasets in the Sequence Read Archive (SRA), highlighting differences in read length produced by the different platforms. A recent review of genome assemblies for Lepidopteran (butterfly/moth) genomes suggested that PacBio HiFi data is currently the best performing approach for assembly (Ellis *et al.,* 2021).
+Below you can see an interactive plot of different data sets in the Sequence Read Archive (SRA), highlighting differences in read length produced by the different platforms. A recent review of genome assemblies for Lepidopteran (butterfly/moth) genomes suggested that PacBio HiFi data is currently the best performing approach for assembly (Ellis *et al.,* 2021). We will come back to this in the assembly section below.
 
-##### Figure 1: A comparative overview of different DNA sequencing technologies (restricted to Order:Lepidoptera datasets)
+##### Figure 1: A comparative overview of different DNA sequencing technologies (restricted to Order: Lepidoptera datasets)
 
 ```{r setup, warning=FALSE,echo=FALSE,message=FALSE}
 
@@ -37,7 +37,7 @@ library(plotly)
 library(stringr)
 
 
-df <- read.csv("SraRunInfo.csv",header=T)
+df <- read.csv("./Resources/SraRunInfo.csv",header=T)
 df$year <- gsub("-.*", "", df$ReleaseDate) 
 
 fig <- df %>%
@@ -85,13 +85,168 @@ fig
 
 ## 3. DNA sequence data: Pre-Assembly QC 
 
-The type of sequencing and assembly you may want to do can depend on your study organism. Some species have intrinsically more or less complex genomes. The basis of this complexity is, well... complex! There are a few important considerations that can inform your strategy, but sometimes it is difficult to know what these may be without additional experiment. Some major considerations are; sequencing coverage, ploidy, heterozygosity, repeat density and repeat structure.
+The type of sequencing and assembly you may want to do can depend on your study organism. Some species have intrinsically more or less complex genomes. The basis of this complexity is, well... complex! There are a few important considerations that can inform your strategy, but sometimes it is difficult to know what these may be without data. Some major considerations are; **sequencing coverage**, **ploidy**, **heterozygosity**, **repeat density and repeat structure**.
 
-Sequencing coverage is the number of times that any given base-pair in your genome appears in your sequencing read data. Put another way, it is the ratio of sequence read data to actual genome size, so if we imagine a 100Mbp haploid (one copy of each chromosome) genome and we have 1Gbp of sequencing data, we would estimate that we have a sequencing coverage of 10. In practice, this estimate is usually roughly accurate for the median coverage value, but due to stochasticity in sequence sampling in combination with sequencing bias, coverage varies according to a distribution.
+#### Sequencing coverage
 
-One useful initial QC procedure to follow is to break down sequencing reads into short (for instance 21bp) overlapping substrings called *k-*mers (in this case we would call them 21-mers) to allow us to get a more accurate assessment of genomic coverage. *k-*mers are useful because some sequencing reads contain errors (remember that some data types have more than others!). By breaking down reads into sub-strings, we ensure that even when there is an error present in the read, we can still get information from the surrounding error-free sequence.
+Sequencing coverage is the number of times that any given base-pair in your genome appears in your sequencing read data. Put another way, it is the ratio of sequence read data to actual genome size, so if we imagine a 100Mbp haploid genome and we have 1Gbp of sequencing data, we would estimate that we have a sequencing coverage of 10. In practice, this estimate is usually roughly accurate for the median coverage value, but due to the random probability of sampling in combination with sequencing bias, coverage varies according to a distribution.
+
+#### Ploidy
+
+Ploidy refers to the number of chromosome copies that an organism has. A single copy is haploid, two copies of a chromosome is diploid (most sexually reproducing organisms are diploid), however higher numbers of copies (the general term is polyploid) are commonly found in nature, particularly in plants.
+
+It is important to note that different ploidy states can exist within an organism - In humans for example, the autosomes are most often diploid, the mitochondrial genome is most often haploid, and the X chromosome can be either haploid or diploid, depending on which gametes fuse during fertilisation.
+
+In addition, ploidy levels can vary between different tissues. Some cells found in the liver are normally polyploid and karyotype alterations have also been linked to cancerous tissues. In another case, Honey bees can have entirely haploid autosomes (which initiates male development) or diploid autosomes (which initiates female development) (Aamidor *et al.,* 2018). **Choosing which individual and tissue to sample for whole genome sequencing is a crucial decision!**
+
+```{r fig2, warning=FALSE,echo=FALSE,message=FALSE}
+
+library(plotly)
+library(stringr)
+
+
+df <- read.table("./Resources/WV.hist")
+df2 <- read.table("./Resources/F1.hist")
+
+fig1 <- df %>%
+
+  plot_ly(
+
+    x = ~V1, 
+
+    y = ~V2, 
+
+
+    text = ~paste0("Unique 21-mers:",V2," 21-mer frequency:",V1), 
+
+    hoverinfo = "text",
+
+    type = 'scatter',
+
+    mode = 'markers',
+    
+    name = 'Illumina'
+
+  ) %>% layout(
+
+     yaxis = list(
+      title = "Unique 21-mers",
+      range=c(0,20000000)),
+
+  
+    xaxis = list(
+      title = "21-mer frequency",
+      range=c(0,80)),
+      
+      shapes = list(
+              
+            list(type = "rect",
+
+                    fillcolor = "green", line = list(color = "green"), opacity = 0.1,
+
+                    x0 = 36, x1 = 80, xref = "x",
+
+                    y0 = 0, y1 = 20000000, yref = "y"),
+
+               list(type = "rect",
+
+                    fillcolor = "blue", line = list(color = "blue"), opacity = 0.1,
+
+                    x0 = 8, x1 = 36, xref = "x",
+
+                    y0 = 0, y1 = 20000000, yref = "y"),
+
+               list(type = "rect",
+
+                 fillcolor = "red", line = list(color = "red"), opacity = 0.1,
+
+                 x0 = 0, x1 = 8, xref = "x",
+
+                 y0 = 0, y1 = 20000000, yref = "y"))
+
+    )
+
+
+fig2 <- df2 %>%
+
+  plot_ly(
+
+    x = ~V1, 
+
+    y = ~V2, 
+
+
+    text = ~paste0("Unique 21-mers:",V2," 21-mer frequency:",V1), 
+
+    hoverinfo = "text",
+
+    type = 'scatter',
+
+    mode = 'markers',
+    
+    name = 'PacBio CLR'
+
+  ) %>% layout(
+
+     yaxis = list(
+      title = "Unique 21-mers",
+      range=c(0,20000000)),
+
+  
+    xaxis = list(
+      title = "21-mer frequency",
+      range=c(0,85)),
+      
+      shapes = list(
+              
+            list(type = "rect",
+
+                    fillcolor = "green", line = list(color = "green"), opacity = 0.1,
+
+                    x0 = 39, x1 = 85, xref = "x",
+
+                    y0 = 0, y1 = 20000000, yref = "y"),
+
+               list(type = "rect",
+
+                    fillcolor = "blue", line = list(color = "blue"), opacity = 0.1,
+
+                    x0 = 12, x1 = 39, xref = "x",
+
+                    y0 = 0, y1 = 20000000, yref = "y"),
+
+               list(type = "rect",
+
+                 fillcolor = "red", line = list(color = "red"), opacity = 0.1,
+
+                 x0 = 0, x1 = 12, xref = "x",
+
+                 y0 = 0, y1 = 20000000, yref = "y"))
+
+    )
+
+    
+    
+  fig <- subplot(fig1, fig2) %>% layout(
+
+     yaxis = list(
+      title = "Unique 21-mers"),
+     xaxis = list(
+      title = "21-mer frequency"))
+
+
+fig
+
+
+```
+
+#### Repeat density & Repeat structure
+
+One useful initial QC procedure to follow is to break down sequencing reads into short (for instance 21bp) overlapping sub-strings called *k-*mers (in this case we would call them 21-mers) to allow us to get a more accurate assessment of genomic coverage. *k-*mers are useful because some sequencing reads contain errors (remember that some data types have more than others!). By breaking down reads into sub-strings, we ensure that even when there is an error present in the read, we can still get information from the surrounding error-free sequence.
 
 ## 4. DNA sequence data: Assembly
+
+![](Resources/Assembly.png){fig-align="center"}
 
 ![](images/Screenshot%202022-09-06%20at%2017.59.04.png){fig-align="center"}
 
@@ -103,4 +258,8 @@ TBC
 
 ###### References:
 
-Emily A Ellis, Caroline G Storer, Akito Y Kawahara, *De novo* genome assemblies of butterflies, *GigaScience*, Volume 10, Issue 6, June 2021, giab041, <https://doi.org/10.1093/gigascience/giab041>
+\[1\] E. A. Ellis, C. G. Storer, and A. Y. Kawahara, "De novo genome assemblies of butterflies," Gigascience, vol. 10, no. 6, pp. 1--8, 2021.
+
+\[2\] S. Celton-Morizur and C. Desdouets, Polyploidization of liver cells, vol. 676. 2010.
+
+\[3\] S. E. Aamidor, B. Yagound, I. Ronai, and B. P. Oldroyd, "Sex mosaics in the honeybee: How haplodiploidy makes possible the evolution of novel forms of reproduction in social Hymenoptera," Biol. Lett., vol. 14, no. 11, 2018.
