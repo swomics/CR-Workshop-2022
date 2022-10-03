@@ -11,7 +11,7 @@ Today we will be discussing and performing Genome assembly. Assembly refers to t
 
 [1. Logging on to the computing environment]
 
-[2. DNA sequence data: Platforms & Formats]
+[2. DNA sequence data: Platforms & Formats](#dna-sequence-data-platforms-formats)
 
 [3. DNA sequence data: Pre-Assembly QC]
 
@@ -23,9 +23,11 @@ Today we will be discussing and performing Genome assembly. Assembly refers to t
 
 TBC
 
-## 2. DNA sequence data: Platforms & Formats
+## 2. DNA sequence data: Platforms & Formats {#dna-sequence-data-platforms-formats}
 
-At it's core whole genome sequencing is the repeated random sub-sampling of genomic sequence. The data properties of these sub-samples (called sequencing "reads") depends on the technology used to generate them. DNA sequencing technology has been subject to many different fundamental technical advances. Broadly speaking, as of 2022, there are three dominant systems: Sequencing by synthesis (Illumina), Single molecule real-time (PacBio) and nanopore sensing (Oxford Nanopore Technologies). The output of these different platforms differ by three key parameters 1) cost per base-pair 2) error-profile and 3) read-length.
+The ultimate goal of whole genome sequencing is to reconstruct the genetic state within an organism, exactly as it occurs *in vivo*. This means the complete uninterrupted base-pair sequence of any chromosomes, including mitochondrial genomes and potentially any endosymbiotic organisms. At the time of writing, the best technology we have can only "read" DNA molecules in continuous sections of varying lengths (and with varying accuracy). These sub-samples of larger genome molecules canbe reconstructed to describe the larger sequence, this is called *de novo* genome assembly.
+
+The data properties of these DNA "sequencing reads" depends on the technology used to generate them. DNA sequencing technology has been subject to many different fundamental technical advances. Broadly speaking, as of 2022, there are three dominant platforms: Sequencing by synthesis ([Illumina](https://youtu.be/fCd6B5HRaZ8)), Single molecule real-time ([PacBio](https://youtu.be/_lD8JyAbwEo)) and nanopore sensing ([Oxford Nanopore Technologies](https://youtu.be/RcP85JHLmnI)). The output of these different platforms differ by three key parameters 1) cost per base-pair 2) error-profile and 3) read-length.
 
 Below you can see an interactive plot of different data sets in the Sequence Read Archive (SRA), highlighting differences in read length produced by the different platforms. A recent review of genome assemblies for Lepidopteran (butterfly/moth) genomes suggested that PacBio HiFi data is currently the best performing approach for assembly (Ellis *et al.,* 2021). We will come back to this in the assembly section below.
 
@@ -83,9 +85,9 @@ fig
 
 ```
 
-## 3. DNA sequence data: Pre-Assembly QC 
+## 3. DNA sequence data: Pre-Assembly QC
 
-The type of sequencing and assembly you may want to do can depend on your study organism. Some species have intrinsically more or less complex genomes. The basis of this complexity is, well... complex! There are a few important considerations that can inform your strategy, but sometimes it is difficult to know what these may be without data. Some major considerations are; **sequencing coverage**, **ploidy**, **heterozygosity**, **repeat density and repeat structure**.
+The type of sequencing and assembly you may want to do can depend on your study organism. Some species have intrinsically more or less complex genomes. There are a few important considerations that can inform your strategy, but sometimes it is difficult to know what these may be without data. Some major considerations are; **sequencing coverage**, **ploidy**, **heterozygosity**, **repeat density and repeat structure**.
 
 #### Sequencing coverage
 
@@ -95,7 +97,7 @@ Sequencing coverage is the number of times that any given base-pair in your geno
 
 Ploidy refers to the number of chromosome copies that an organism has. A single copy is haploid, two copies of a chromosome is diploid (most sexually reproducing organisms are diploid), however higher numbers of copies (the general term is polyploid) are commonly found in nature, particularly in plants.
 
-It is important to note that different ploidy states can exist within an organism - In humans for example, the autosomes are most often diploid, the mitochondrial genome is most often haploid, and the X chromosome can be either haploid or diploid, depending on which gametes fuse during fertilisation.
+It is important to note that different ploidy states can exist within an organism - In humans for example, the autosomes are most often diploid, the mitochondrial genome is most often haploid, and the X chromosome can be either haploid or diploid.
 
 In addition, ploidy levels can vary between different tissues. Some cells found in the liver are normally polyploid and karyotype alterations have also been linked to cancerous tissues. In another case, Honey bees can have entirely haploid autosomes (which initiates male development) or diploid autosomes (which initiates female development) (Aamidor *et al.,* 2018). **Choosing which individual and tissue to sample for whole genome sequencing is a crucial decision!**
 
@@ -242,11 +244,56 @@ fig
 
 #### Repeat density & Repeat structure
 
-One useful initial QC procedure to follow is to break down sequencing reads into short (for instance 21bp) overlapping sub-strings called *k-*mers (in this case we would call them 21-mers) to allow us to get a more accurate assessment of genomic coverage. *k-*mers are useful because some sequencing reads contain errors (remember that some data types have more than others!). By breaking down reads into sub-strings, we ensure that even when there is an error present in the read, we can still get information from the surrounding error-free sequence.
+One useful initial QC procedure to follow is to break down sequencing reads into short (for instance 21bp) overlapping sub-strings called *k-*mers (in this case we would call them 21-mers) to allow us to get a more accurate assessment of genomic coverage. *k-*mers are useful because some sequencing reads contain errors. By breaking down reads into sub-strings, we ensure that even when there is an error present in the read, we can still get information from the surrounding error-free sequence.
 
 ## 4. DNA sequence data: Assembly
 
-![](Resources/Assembly.png){fig-align="center"}
+There are a number of algorithms that can be used to reconstruct genomic sequence from reads. Two of the most common are the *de brujn* graph, which utilises overlapping fixed-length *k*-mers to reconstruct the sequence. As previously discussed, *k*-mers have some useful properties for assembly, however they cannot resolve sequences that are repeated throughout the genome if they are longer then *k* (for example transposable elements).
+
+```{r}
+
+string <- "This is an example using a sentence instead of DNA sequence"
+
+#pick a mer length (7-mer)
+kmer_length <- 7
+#subtract one for getting correct slice indices
+slice_length <- kmer_length-1
+
+#loop through every position in the string to generate k-mers
+for (i in seq(1,nchar(string)-kmer_length))
+{
+  #calculate some whitespace padding for visualising
+  padding <- paste(rep(" ", i),collapse = '')
+  print(paste(padding,substr(string, i, i+slice_length)))
+}
+```
+
+Alternatively, the Overlap Layout Consensus (OLC) method can be used which looks for overlaps between whole reads rather than the sub-sampled k-mers. As technological advance have enabled longer read lengths, OLC methods have become a favorable method, since they can bridge repetitive sequences and therefore reconstruct longer contiguous sequences.
+
+```{r}
+
+
+string <- "This is an example using a sentence instead of DNA sequence"
+total_reads <- 20
+
+fixed_read_length <- 6
+
+# get some random starting positions for the reads
+read_indices <-sample(1:nchar(string),total_reads)
+
+# loop through the starting positions
+for (i in sort(read_indices))
+{
+  #sample the exponential distribution
+  exp_var <- rexp(1)
+  #use exp to generate variable read lengths
+  variable_read_length <- fixed_read_length * round(1+exp_var)
+  #calculate some whitespace padding for visualising
+  padding <- paste(rep(" ", i-1),collapse = '')
+  print(paste(padding,substr(string, i, i+variable_read_length)))
+}
+
+```
 
 ![](images/Screenshot%202022-09-06%20at%2017.59.04.png){fig-align="center"}
 
