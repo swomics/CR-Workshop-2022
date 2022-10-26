@@ -9,14 +9,12 @@ website:
     left:
       - text: "Home"
         file: index.qmd
-      - text: "1 - Overview"
+      - text: "Day 1"
         file: Day1.qmd
-      - text: "2 - Assembly"
+      - text: "Day 2"
         file: Day2.qmd
-      - text: "3 - Annotation"
+      - text: "Day 3"
         file: Day3.qmd
-      - text: "4 - Comparative"
-        file: Day4.qmd
       - about.qmd       
 
 format:
