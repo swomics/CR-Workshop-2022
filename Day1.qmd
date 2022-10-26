@@ -96,11 +96,11 @@ fig
 
 ```
 
-Let's download some data to explore today from the Sequence Read Archive (SRA). We'll be using E. coli bacteria, because it has a small genome size and is computationally simpler, but the general principles we'll explore can be applied to other organisms (with some caveats).
+Let's download some data to explore today from the Sequence Read Archive (SRA). We'll be using E. coli bacteria, because it has a small genome size and is therefore has a lower computational burden, but the general principles we'll explore can be applied to other organisms (with some caveats).
 
-    fasterq-dump SRR18106304 &
-    fasterq-dump SRR10971019 &
-    fasterq-dump ERR1674581 &
+    fasterq-dump SRR18106304
+    fasterq-dump SRR10971019
+    fasterq-dump ERR1674581
 
 These commands should download the "fastq" formatted data from these experiments, if you want to find out more about the experiment you can search the dataset on https://www.ncbi.nlm.nih.gov/.
 
