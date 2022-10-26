@@ -1,5 +1,5 @@
 ---
-title: "Day 1 - Genomics Overview"
+title: "Day 1"
 author: "SW"
 editor: visual
 output: html_document 
@@ -11,21 +11,30 @@ Today we will be discussing and performing Genome assembly. Assembly refers to t
 
 [1. Logging on to the computing environment]
 
-[2. DNA sequence data: Platforms & Formats](#dna-sequence-data-platforms-formats)
+[2. Platforms & Formats]
 
-[3. DNA sequence data: Pre-Assembly QC]
+[3. Pre-Assembly QC]
 
-[4. DNA sequence data: Assembly]
+[4. Assembly]
 
-[5. DNA sequence data: Post-Assembly QC]
+[5. Post-Assembly QC]
+
+[6. More complex genomes]
 
 ## 1. Logging on to the computing environment
 
 TBC
 
-## 2. DNA sequence data: Platforms & Formats {#dna-sequence-data-platforms-formats}
+## 2. Platforms & Formats {#dna-sequence-data-platforms-formats}
 
-The ultimate goal of whole genome sequencing is to reconstruct the genetic state within an organism, exactly as it occurs *in vivo*. This means the complete uninterrupted base-pair sequence of any chromosomes, including mitochondrial genomes and potentially any endosymbiotic organisms. At the time of writing, the best technology we have can only "read" DNA molecules in continuous sections of varying lengths (and with varying accuracy). These sub-samples of larger genome molecules can be reconstructed to describe the larger sequence, this is called *de novo* genome assembly.
+The ultimate goal of whole genome sequencing is to reconstruct the genetic state within an organism, exactly as it occurs *in vivo*. This means the complete uninterrupted base-pair sequence of any chromosomes, including mitochondrial genomes and potentially any endosymbiotic organisms. At the time of writing, the best technology we have can only "read" DNA molecules in continuous sections of varying lengths (and with varying accuracy). These sub-samples of larger genome molecules can be reconstructed to describe the larger sequence, this is called *de novo* genome assembly. Generally speaking, reconstructed sequence data such as assembled genomes or transcriptomes, is stored in the "fasta" format (.fasta/.fa/.fna). This format consists of a header line prefixed with a "\>" character, followed by a newline, after this the actual sequence data in the form of ACTG/actg and N(to represent unknown bases). Followed by another new line. For example:
+
+    >Chromosome1
+    ACGTACTGATCAGATCGATCGAGCGGGCGCGCGCAATGCATCGA
+    >Chromosome2
+    ACGCTAGCTAGCTAGCTAGCATCGATCGACA
+    >Chromosome3
+    GCATGCATCGATCGATGCACGGCATCG
 
 The data properties of these DNA "sequencing reads" depends on the technology used to generate them. DNA sequencing technology has been subject to many different fundamental technical advances. Broadly speaking, as of 2022, there are three dominant platforms: Sequencing by synthesis ([Illumina](https://youtu.be/fCd6B5HRaZ8)), Single molecule real-time ([PacBio](https://youtu.be/_lD8JyAbwEo)) and nanopore sensing ([Oxford Nanopore Technologies](https://youtu.be/RcP85JHLmnI)). The output of these different platforms differ by three key parameters 1) cost per base-pair 2) error-profile and 3) read-length.
 
@@ -143,7 +152,7 @@ A. fastq files generally contain what type of information?
 
 B. The Sequence Read Archive (SRA) contains what type of data?
 
-## 3. DNA sequence data: Pre-Assembly QC
+## 3. Pre-Assembly QC
 
 The type of sequencing and assembly you may want to do can depend on your study organism. Some species have intrinsically more or less complex genomes. There are a few important considerations that can inform your strategy, but sometimes it is difficult to know what these may be without data. Some major considerations are; **sequencing coverage**, **ploidy**, **heterozygosity**, **repeat density and repeat structure**.
 
@@ -187,6 +196,7 @@ Let's have a look at the k-mer content to find out more about our dataset and ou
     ##R code
     library(ggplot2)
     HiSeq_kmers <- read.table("ecoli_HiSeqX.histo")
+    #you may need to adjust the x and y axis limits, depending on the data.
     ggplot(data=HiSeq_kmers,aes(x=V1,y=V2)) + geom_point() + xlim(0,500) + ylim(0,100000)
 
 We can also feed our data into another program (genomescope), which is able to fit a model to the histogram and calculate some predictions about the genome properties, such as genome size, heterozygosity (if present), repetitiveness and sequencing coverage.
@@ -388,7 +398,7 @@ A. Do any of our datasets contain contaminant DNA?
 
 B. Should you filter out contaminant DNA before or after assembly?
 
-## 4. DNA sequence data: Assembly
+## 4. Assembly
 
 ### 4.1. Read QC
 
@@ -636,62 +646,6 @@ A. De brujn graphs are a useful method for which kind of data?
 B. Longer k-mers may help produce more contiguous assemblies. True or False?
 
 C. OLC graphs are a useful method for which kind of data?
-
-## 5. DNA sequence data: Post-Assembly QC
-
-### 5.1. Assembly graphs and genome size.
-
-We can visualise the assembly graphs for these three different datasets using the software Bandage. We use a specific file-type produced by some (but not all) genome assembly programs, known as a Graphical Fragment Assembly (.gfa) file. This format documents stretches of assembles sequence and also the relationship between contiguous runs, that may have multiple valid paths due to the presence of repetitive sequence or heterozygosity.
-
-##### Figure 3: A visualisation of the gfa file produced by Spades using the short Illumina read data. We can see that there is a tangle of valid paths, and also that the total length is higher than the size estimated from our earlier k-mer analysis. There are long stretches of contiguous sequence, which is useful genomic data, but the unresolved regions of the graph may inhibit some types of analysis. We would refer to this as a draft genome.
-
-![](images/Screenshot%202022-10-13%20at%2014.30.49.png){fig-align="center"}
-
-##### Figure 4: In contrast, here is a visualisation of the "unitig" gfa file produced by canu using the nanopore data. We can see that, for the most part there is a single clean path (node), and that the total length is roughly the size we expect. After checking the final contig sequence file (fasta), the loop structure is resolved into a single circular genome.
-
-![](images/Screenshot%202022-10-14%20at%2014.02.47.png){fig-align="center"}
-
-##### Figure 5: Here is a visualisation of the gfa file produced by hifiasm using the PacBio HiFi dataset. We can see that this data is able to resolve the genome into a single closed loop.
-
-![](images/Screenshot%202022-10-13%20at%2014.29.47.png){fig-align="center"}
-
-### 5.2 Gene content
-
-We can check the quality of an assembly, by checking whether "conserved" genes are present in our assemblies (see paper for details). Using the software BUSCO (Benchmarking Universal Single-Copy Orthologs), we can generate some information about whether genes are present or absent, fragmented across contigs, or whether they're present in the right number.
-
-    ##Bash/command line code busco -m genome -i /scratch/ecoli_hiseq_spades/scaffolds.fasta -o Hiseq_busco --auto-lineage-prok`
-
-### 5.3 k-mer content
-
-Another way to check the quality of a genome assembly, without having to rely on genes, is to compare the k-mer content that we saw in the raw reads to the k-mers present in the finished genome assembly. We can use the k-mer analysis toolkit to do this.
-
-    kat comp -t 16 -o SRR18106304_vs_spades SRR18106304.fastq ecoli_hiseq_spades/scaffolds.fasta
-
-![](images/Screenshot%202022-10-24%20at%2016.42.40.png){fig-align="center"}
-
-Here we can see the same distribution we observed earlier, however now we have colours added, which indicate how many times k-mers occur in the assembled genome. We can see here on the left hand side that many of the error k-mers are shown in black. This means the k-mers are not present in the assembly, which is good news. However, we can also see that some of these error k-mers are shown in red, which means there are some sequence errors still present in the draft assembly.
-
-In comparison here is the same plot for the HiFi assembly.
-
-![](images/Screenshot%202022-10-24%20at%2016.40.24.png){fig-align="center"}
-
-Now we can see that there are much less k-mers in the left hand peak present in the assembly. although we can see that a small number of k-mers in the right hand peak contains a small amount of purple duplicated k-mers!
-
-### 6.1. More complex genomes
-
-In haploid organisms such as our example, E. coli, assembly graphs may suggest multiple paths through a given sequence, but we know that there is only one valid path through the graph. In diploid (and polyploid) organisms, this becomes more complicated because there are more than one real biological paths through the graph. These alternate paths are due to the presence of sister chromatids, that are not identical to each other, due to the presence of genetic variation, or heterozygosity.
-
-##### Figure 6: A common result from sequencing diploid genomes is the presence of redundant haplotypes in the final assembly, particularly for regions with have a high sequence divergence. Here we can see homozygous regions in orange, and a reconstructed reference contig which contains a mosaic of haplotypes from two different sister chromatids (indicated in yellow and blue).
-
-![](images/Screenshot%202022-10-24%20at%2017.25.47.png){fig-align="center"}
-
-##### Figure 7: One method of resolving heterozygosity in a genome sequencing project is to gather parental data and use this to partition the chromatids inherited by the F1 offspring. In this example, we generated long reads for an F1 individual and short Illumina reads for the parents. We were able to use the Illumina reads to separate the F1 Pacbio reads into two groups for assembly.
-
-![](images/Screenshot%202022-10-24%20at%2017.37.37.png){fig-align="center"}
-
-##### Figure 7: Another way to utilise parental data is to use the k-mers during the construction of the assembly graph itself. Specifically, we can identify bubble structures that are likely to represent heterozygous regions and look for parent specific k-0mers in the alternate paths. Crucially, this approach requires high accuracy long reads such as HiFi data to work successfully.
-
-![](images/Screenshot%202022-10-24%20at%2017.37.51.png){fig-align="center"}
 
 ###### References:
 

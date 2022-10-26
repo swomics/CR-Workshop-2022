@@ -8,7 +8,7 @@
 
 <meta name="author" content="SW">
 
-<title>Genomics Workshop 2022 - Day 2 - Genome Assembly</title>
+<title>Genomics Workshop 2022 - Day 2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -36,10 +36,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -109,14 +109,28 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#post-assembly-qc" id="toc-post-assembly-qc" class="nav-link" data-scroll-target="#post-assembly-qc">5. Post-Assembly QC</a>
+  <ul class="collapse">
+  <li><a href="#assembly-graphs-and-genome-size." id="toc-assembly-graphs-and-genome-size." class="nav-link" data-scroll-target="#assembly-graphs-and-genome-size.">5.1. Assembly graphs and genome size.</a></li>
+  <li><a href="#gene-content" id="toc-gene-content" class="nav-link" data-scroll-target="#gene-content">5.2. Gene content</a></li>
+  <li><a href="#k-mer-content" id="toc-k-mer-content" class="nav-link" data-scroll-target="#k-mer-content">5.3. k-mer content</a></li>
+  <li><a href="#quast-report" id="toc-quast-report" class="nav-link" data-scroll-target="#quast-report">5.4. Quast report</a></li>
+  </ul></li>
+  <li><a href="#more-complex-genomes" id="toc-more-complex-genomes" class="nav-link" data-scroll-target="#more-complex-genomes">6. More complex genomes</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Day 2 - Genome Assembly</h1>
+<h1 class="title">Day 2</h1>
 </div>
 
 
@@ -136,8 +150,136 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Today we will be discussing and performing some more genome assembly, however this time you will each have different published datasets to work on.</p>
+</section>
+<section id="post-assembly-qc" class="level2" data-link="5. Post-Assembly QC">
+<h2 data-link="5. Post-Assembly QC" class="anchored" data-anchor-id="post-assembly-qc">5. Post-Assembly QC</h2>
+<p>Now that we have some assembled genomes using different datasets, we will explore them in some more detail. This should help you understand the strengths and weaknesses of the different data-types, and also how to assess different aspects of genome assembly quality.</p>
+<p>Both Canu and Spades should have produced directories full of various files. Hifiasm should also produce output files, but for this program we need to do an additional step to generate a “fasta” file from the “gfa” file.</p>
+<pre><code>awk '/^S/{print "&gt;"$2;print $3}' hifi_ecoli.p_ctg.gfa &gt; hifi_ecoli.p_ctg.fa</code></pre>
+<section id="assembly-graphs-and-genome-size." class="level3">
+<h3 class="anchored" data-anchor-id="assembly-graphs-and-genome-size.">5.1. Assembly graphs and genome size.</h3>
+<p>We can visualise the assembly graphs for these three different datasets using the software Bandage. We use a specific file-type produced by some (but not all) genome assembly programs, known as a Graphical Fragment Assembly (.gfa) file. This format documents stretches of assembles sequence and also the relationship between contiguous runs, that may have multiple valid paths due to the presence of repetitive sequence or heterozygosity.</p>
+<p>You can load bandage by:</p>
+<ol type="1">
+<li><p>typing the command “Bandage” into the unix command prompt.</p></li>
+<li><p>A window should open.</p></li>
+<li><p>You can click File, then load graph, and you should be able to select a gfa file from one of your assemblies.</p></li>
+</ol>
+<section id="figure-3-a-visualisation-of-the-gfa-file-produced-by-spades-using-the-short-illumina-read-data.-we-can-see-that-there-is-a-tangle-of-valid-paths-and-also-that-the-total-length-is-higher-than-the-size-estimated-from-our-earlier-k-mer-analysis.-there-are-long-stretches-of-contiguous-sequence-which-is-useful-genomic-data-but-the-unresolved-regions-of-the-graph-may-inhibit-some-types-of-analysis.-we-would-refer-to-this-as-a-draft-genome." class="level5">
+<h5 class="anchored" data-anchor-id="figure-3-a-visualisation-of-the-gfa-file-produced-by-spades-using-the-short-illumina-read-data.-we-can-see-that-there-is-a-tangle-of-valid-paths-and-also-that-the-total-length-is-higher-than-the-size-estimated-from-our-earlier-k-mer-analysis.-there-are-long-stretches-of-contiguous-sequence-which-is-useful-genomic-data-but-the-unresolved-regions-of-the-graph-may-inhibit-some-types-of-analysis.-we-would-refer-to-this-as-a-draft-genome.">Figure 3: A visualisation of the gfa file produced by Spades using the short Illumina read data. We can see that there is a tangle of valid paths, and also that the total length is higher than the size estimated from our earlier k-mer analysis. There are long stretches of contiguous sequence, which is useful genomic data, but the unresolved regions of the graph may inhibit some types of analysis. We would refer to this as a draft genome.</h5>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Screenshot%202022-10-13%20at%2014.30.49.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</section>
+<section id="figure-4-in-contrast-here-is-a-visualisation-of-the-unitig-gfa-file-produced-by-canu-using-the-nanopore-data.-we-can-see-that-for-the-most-part-there-is-a-single-clean-path-node-and-that-the-total-length-is-roughly-the-size-we-expect.-after-checking-the-final-contig-sequence-file-fasta-the-loop-structure-is-resolved-into-a-single-circular-genome." class="level5">
+<h5 class="anchored" data-anchor-id="figure-4-in-contrast-here-is-a-visualisation-of-the-unitig-gfa-file-produced-by-canu-using-the-nanopore-data.-we-can-see-that-for-the-most-part-there-is-a-single-clean-path-node-and-that-the-total-length-is-roughly-the-size-we-expect.-after-checking-the-final-contig-sequence-file-fasta-the-loop-structure-is-resolved-into-a-single-circular-genome.">Figure 4: In contrast, here is a visualisation of the “unitig” gfa file produced by canu using the nanopore data. We can see that, for the most part there is a single clean path (node), and that the total length is roughly the size we expect. After checking the final contig sequence file (fasta), the loop structure is resolved into a single circular genome.</h5>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Screenshot%202022-10-14%20at%2014.02.47.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</section>
+<section id="figure-5-here-is-a-visualisation-of-the-gfa-file-produced-by-hifiasm-using-the-pacbio-hifi-dataset.-we-can-see-that-this-data-is-able-to-resolve-the-genome-into-a-single-closed-loop." class="level5">
+<h5 class="anchored" data-anchor-id="figure-5-here-is-a-visualisation-of-the-gfa-file-produced-by-hifiasm-using-the-pacbio-hifi-dataset.-we-can-see-that-this-data-is-able-to-resolve-the-genome-into-a-single-closed-loop.">Figure 5: Here is a visualisation of the gfa file produced by hifiasm using the PacBio HiFi dataset. We can see that this data is able to resolve the genome into a single closed loop.</h5>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Screenshot%202022-10-13%20at%2014.29.47.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="gene-content" class="level3">
+<h3 class="anchored" data-anchor-id="gene-content">5.2. Gene content</h3>
+<p>We can check the quality of an assembly, by checking whether “conserved” genes are present in our assemblies (see paper for details). Using the software BUSCO (Benchmarking Universal Single-Copy Orthologs), we can generate some information about whether genes are present or absent, fragmented across contigs, or whether they’re present in the right number.</p>
+<pre><code>##Bash/command line code 
+busco -m genome -i /scratch/ecoli_hiseq_spades/scaffolds.fasta -o Hiseq_busco --auto-lineage-prok</code></pre>
+</section>
+<section id="k-mer-content" class="level3">
+<h3 class="anchored" data-anchor-id="k-mer-content">5.3. k-mer content</h3>
+<p>Another way to check the quality of a genome assembly, without having to rely on genes, is to compare the k-mer content that we saw in the raw reads to the k-mers present in the finished genome assembly. We can use the k-mer analysis toolkit to do this.</p>
+<pre><code>kat comp -t 16 -o SRR18106304_vs_spades SRR18106304.fastq ecoli_hiseq_spades/scaffolds.fasta</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Screenshot%202022-10-24%20at%2016.42.40.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+<p>Here we can see the same distribution we observed earlier, however now we have colours added, which indicate how many times k-mers occur in the assembled genome. We can see here on the left hand side that many of the error k-mers are shown in black. This means the k-mers are not present in the assembly, which is good news. However, we can also see that some of these error k-mers are shown in red, which means there are some sequence errors still present in the draft assembly.</p>
+<p>In comparison here is the same plot for the HiFi assembly.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Screenshot%202022-10-24%20at%2016.40.24.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+<p>Now we can see that there are much less k-mers in the left hand peak present in the assembly. although we can see that a small number of k-mers in the right hand peak contains a small amount of purple duplicated k-mers!</p>
+</section>
+<section id="quast-report" class="level3">
+<h3 class="anchored" data-anchor-id="quast-report">5.4. Quast report</h3>
+<p>Before we move on to some other checks we are going to run the program quast, which performs a range of checks for you. We can run this as indicated below. For the purposes of demonstration we will use a reference genome to check our data against, but for a novel genome assembly we would not have this data.</p>
+<ol type="1">
+<li><p>First find an E. coli k-12 reference genome on NCBI (https://www.ncbi.nlm.nih.gov/), as shown below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Screenshot%202022-10-26%20at%2010.26.34.png" class="img-fluid figure-img"></p>
+</figure>
+</div></li>
+<li><p>Select one of the resulting genome assemblies.</p></li>
+<li><p>Now click on the link on the right hand side of the page labelled “FTP directory for RefSeq assembly”</p></li>
+<li><p>Here you can see a range of information including the genomic sequence files annotations and other associated statistics.</p></li>
+<li><p>Right click on the file with the suffix “_genomic.fna.gz” and copy the link.</p></li>
+<li><p>Now in your unix terminal navigate to your home directory and paste the link after a “wget command”, in the same format as below (make sure to paste in the correct link that you’ve copied).</p></li>
+</ol>
+<!-- -->
+<pre><code>wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_example/GCF_example_genomic.fna.gz</code></pre>
+<ol start="7" type="1">
+<li>Now you are ready to run quast with your three previously assembled genomes.</li>
+</ol>
+<!-- -->
+<pre><code>quast -r  GCF_000005845.2_ASM584v2_genomic.fna --circos --gene-finding --output-dir test_quast ./Hifi_ecoli.fa ./ecoli-oxford/ecoli.contigs.fasta ./ecoli_hiseq_spades/scaffolds.fasta  </code></pre>
+<ol start="8" type="1">
+<li>Have a look at the quast report by loading the html file.</li>
+</ol>
+<!-- -->
+<pre><code>firefox test_quast/report.html</code></pre>
+</section>
+</section>
+<section id="more-complex-genomes" class="level2" data-link="6. More complex genomes">
+<h2 data-link="6. More complex genomes" class="anchored" data-anchor-id="more-complex-genomes">6. More complex genomes</h2>
+<p>So far we have only considered a haploid bacterial genome, with a very small overall size. In such simple genomes an assembly graphs may suggest multiple paths through a given sequence due to repeating sequence, but we know that there is likely only one biologically real path through the graph. In diploid (and polyploid) organisms, this becomes more complicated because there are more than one real biological paths through the graph. These alternate paths are due to the presence of sister chromatids, that are not identical to each other, due to the presence of genetic variation, or heterozygosity. A key factor in assembling high quality genome assemblies, is the “phasing” of the chromosomes. It can be difficult to distinguish whether a given heterozygous region belongs to one chromosome copy or the other. Variation found along the same chromosome is in “linkage” or can be said to have the same “phase”. A perfect genome assembly would reconstruct the variation from each chromosome perfectly as found in the original organism, however in practice this can be difficult to achieve. The figures below should help to explain this problem and the potential solutions.</p>
+<section id="figure-6-a-common-result-from-sequencing-diploid-genomes-is-the-presence-of-redundant-haplotypes-in-the-final-assembly-particularly-for-regions-with-have-a-high-sequence-divergence.-here-we-can-see-homozygous-regions-in-orange-and-a-reconstructed-reference-contig-which-contains-a-mosaic-of-haplotypes-from-two-different-sister-chromatids-indicated-in-yellow-and-blue." class="level5">
+<h5 class="anchored" data-anchor-id="figure-6-a-common-result-from-sequencing-diploid-genomes-is-the-presence-of-redundant-haplotypes-in-the-final-assembly-particularly-for-regions-with-have-a-high-sequence-divergence.-here-we-can-see-homozygous-regions-in-orange-and-a-reconstructed-reference-contig-which-contains-a-mosaic-of-haplotypes-from-two-different-sister-chromatids-indicated-in-yellow-and-blue.">Figure 6: A common result from sequencing diploid genomes is the presence of redundant haplotypes in the final assembly, particularly for regions with have a high sequence divergence. Here we can see homozygous regions in orange, and a reconstructed reference contig which contains a mosaic of haplotypes from two different sister chromatids (indicated in yellow and blue).</h5>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Screenshot%202022-10-24%20at%2017.25.47.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</section>
+<section id="figure-7-one-method-of-resolving-heterozygosity-in-a-genome-sequencing-project-is-to-gather-parental-data-and-use-this-to-partition-the-chromatids-inherited-by-the-f1-offspring.-in-this-example-we-generated-long-reads-for-an-f1-individual-and-short-illumina-reads-for-the-parents.-we-were-able-to-use-the-illumina-reads-to-separate-the-f1-pacbio-reads-into-two-groups-for-assembly." class="level5">
+<h5 class="anchored" data-anchor-id="figure-7-one-method-of-resolving-heterozygosity-in-a-genome-sequencing-project-is-to-gather-parental-data-and-use-this-to-partition-the-chromatids-inherited-by-the-f1-offspring.-in-this-example-we-generated-long-reads-for-an-f1-individual-and-short-illumina-reads-for-the-parents.-we-were-able-to-use-the-illumina-reads-to-separate-the-f1-pacbio-reads-into-two-groups-for-assembly.">Figure 7: One method of resolving heterozygosity in a genome sequencing project is to gather parental data and use this to partition the chromatids inherited by the F1 offspring. In this example, we generated long reads for an F1 individual and short Illumina reads for the parents. We were able to use the Illumina reads to separate the F1 PacBio reads into two groups for assembly.</h5>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Screenshot%202022-10-24%20at%2017.37.37.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</section>
+<section id="figure-7-another-way-to-utilise-parental-data-is-to-use-the-k-mers-during-the-construction-of-the-assembly-graph-itself.-specifically-we-can-identify-bubble-structures-that-are-likely-to-represent-heterozygous-regions-and-look-for-parent-specific-k-0mers-in-the-alternate-paths.-crucially-this-approach-requires-high-accuracy-long-reads-such-as-hifi-data-to-work-successfully." class="level5">
+<h5 class="anchored" data-anchor-id="figure-7-another-way-to-utilise-parental-data-is-to-use-the-k-mers-during-the-construction-of-the-assembly-graph-itself.-specifically-we-can-identify-bubble-structures-that-are-likely-to-represent-heterozygous-regions-and-look-for-parent-specific-k-0mers-in-the-alternate-paths.-crucially-this-approach-requires-high-accuracy-long-reads-such-as-hifi-data-to-work-successfully.">Figure 7: Another way to utilise parental data is to use the k-mers during the construction of the assembly graph itself. Specifically, we can identify bubble structures that are likely to represent heterozygous regions and look for parent specific k-0mers in the alternate paths. Crucially, this approach requires high accuracy long reads such as HiFi data to work successfully.</h5>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Screenshot%202022-10-24%20at%2017.37.51.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+<section id="section" class="level6">
+<h6 class="anchored" data-anchor-id="section"></h6>
 
 
+</section>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
