@@ -238,10 +238,12 @@ busco -m genome -i /scratch/ecoli_hiseq_spades/scaffolds.fasta -o Hiseq_busco --
 <!-- -->
 <pre><code>quast -r  GCF_000005845.2_ASM584v2_genomic.fna --circos --gene-finding --output-dir test_quast ./Hifi_ecoli.fa ./ecoli-oxford/ecoli.contigs.fasta ./ecoli_hiseq_spades/scaffolds.fasta  </code></pre>
 <ol start="8" type="1">
-<li>Have a look at the quast report by loading the html file.</li>
+<li><p>Have a look at the quast report by loading the html file.</p>
+<p>firefox test_quast/report.html</p></li>
 </ol>
-<!-- -->
-<pre><code>firefox test_quast/report.html</code></pre>
+<iframe id="iframe_NCBI" width="708" height="354" src="https://www.ncbi.nlm.nih.gov/projects/sviewer/embedded_iframe.html?iframe=iframe_NCBI&amp;id=NC_000913.3&amp;tracks=[key:sequence_track,name:Sequence,display_name:Sequence,id:STD649220238,annots:Sequence,ShowLabel:false,ColorGaps:false,shown:true,order:1][key:gene_model_track,name:Genes,display_name:Genes,id:STD3194982005,annots:Unnamed,Options:MergeAll,CDSProductFeats:false,NtRuler:true,AaRuler:true,HighlightMode:2,ShowLabel:true,shown:true,order:5]&amp;assm_context=GCF_000005845.2&amp;v=1:4641652&amp;c=800080&amp;select=null&amp;slim=0&amp;appname=no_appname" onload="if(!window._SViFrame){_SViFrame=true;window.addEventListener('message',function(e){if(e.origin=='https://www.ncbi.nlm.nih.gov' &amp;&amp; !isNaN(e.data.h))document.getElementById(e.data.f).height=parseInt(e.data.h);});}">
+</iframe>
+
 </section>
 </section>
 <section id="more-complex-genomes" class="level2" data-link="6. More complex genomes">

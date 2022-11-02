@@ -7,11 +7,28 @@ output: html_document
 
 ## Introduction
 
-Today we will be discussing and performing some more genome assembly, however this time you will each have different published datasets to work on.
+In the previous session, we used some different data types produced by different technologies to reconstruct the full DNA complement of a target organism. Today, we will do some more work on the resulting genomes and try and assess how good our constructions are. We will use some concepts covered in the last session, such as k-mers, but we will also start to incorporate information about functional elements such as genes. Before we do that, it's important to recap on what a genome contains, and how it functions.
+
+The DNA sequence of an organism is sometimes referred to as the data storage structure of living organisms. This storage contains a dizzying variety of features: Their are sequences that can be transcribed into various species of RNA. Some of these RNA molecules can be active in their own right, such as micro-RNA or CRISPR sequences. Other transcribed sequences go on to be translated into strings of amino-acids, that ultimately produce functional proteins.
+
+##### Figure 1. The central dogma of molecular biology
+
+![](images/Screenshot%202022-10-27%20at%2015.26.47.png){fig-align="center"}
+
+Many regions of DNA are not typically converted into other types of biomolecule, however they can still confer important structural properties (e.g. centromeres or telomeres), or provide regulation of the regions that are transcribed (e.g. promoters or enhancers). Genomes are also full of viral and non-viral mobile DNA sequences such as transposable elements, the differing activities of these mobile sequences are fascinating in their own right, and can have mutagenic activities, with important implications for evolutionary biology.
+
+Genome annotation refers broadly to the identification of the various features in a genome sequence. Additional data is often used to achieve this. Rather than generate sequencing read data from genomic DNA, we can use the same technology to capture a sample of an organisms RNA. "Mapping" this data (aligning the RNA sequencing reads to a genome assembly), can provide evidence for the locations of transcribed sequence including their, start, end and gene splicing events. Based on the sequences within these annotations we can then predict resulting amino-acid sequences, and in some cases the three-dimensional structure of the resulting proteins.
+
+Here is a genome browser displaying annotations for an E. coli reference genome, have a go at zooming in to see the various annotations on the genome, and then further to the nucleotide sequence:
+
+```{=html}
+<iframe id="iframe_NCBI" width="708" height="354" src="https://www.ncbi.nlm.nih.gov/projects/sviewer/embedded_iframe.html?iframe=iframe_NCBI&id=NC_000913.3&tracks=[key:sequence_track,name:Sequence,display_name:Sequence,id:STD649220238,annots:Sequence,ShowLabel:false,ColorGaps:false,shown:true,order:1][key:gene_model_track,name:Genes,display_name:Genes,id:STD3194982005,annots:Unnamed,Options:MergeAll,CDSProductFeats:false,NtRuler:true,AaRuler:true,HighlightMode:2,ShowLabel:true,shown:true,order:5]&assm_context=GCF_000005845.2&v=1:4641652&c=800080&select=null&slim=0&appname=no_appname" onload="if(!window._SViFrame){_SViFrame=true;window.addEventListener('message',function(e){if(e.origin=='https://www.ncbi.nlm.nih.gov' && !isNaN(e.data.h))document.getElementById(e.data.f).height=parseInt(e.data.h);});}">
+</iframe>
+```
 
 ## 5. Post-Assembly QC {data-link="5. Post-Assembly QC"}
 
-Now that we have some assembled genomes using different datasets, we will explore them in some more detail. This should help you understand the strengths and weaknesses of the different data-types, and also how to assess different aspects of genome assembly quality.
+Now that we have some assembled genomes from the previous session, we will explore them in some more detail. This should help you understand the strengths and weaknesses of the different data-types, and also how to assess different aspects of genome assembly quality.
 
 Both Canu and Spades should have produced directories full of various files. Hifiasm should also produce output files, but for this program we need to do an additional step to generate a "fasta" file from the "gfa" file.
 
@@ -41,14 +58,7 @@ You can load bandage by:
 
 ![](images/Screenshot%202022-10-13%20at%2014.29.47.png){fig-align="center"}
 
-### 5.2. Gene content
-
-We can check the quality of an assembly, by checking whether "conserved" genes are present in our assemblies (see paper for details). Using the software BUSCO (Benchmarking Universal Single-Copy Orthologs), we can generate some information about whether genes are present or absent, fragmented across contigs, or whether they're present in the right number.
-
-    ##Bash/command line code 
-    busco -m genome -i /scratch/ecoli_hiseq_spades/scaffolds.fasta -o Hiseq_busco --auto-lineage-prok
-
-### 5.3. k-mer content
+### 5.2. k-mer content
 
 Another way to check the quality of a genome assembly, without having to rely on genes, is to compare the k-mer content that we saw in the raw reads to the k-mers present in the finished genome assembly. We can use the k-mer analysis toolkit to do this.
 
@@ -64,9 +74,22 @@ In comparison here is the same plot for the HiFi assembly.
 
 Now we can see that there are much less k-mers in the left hand peak present in the assembly. although we can see that a small number of k-mers in the right hand peak contains a small amount of purple duplicated k-mers!
 
+### 5.2. Gene content
+
+We can check the quality of an assembly, by checking whether "conserved" genes are present in our assemblies (see paper for details). Using the software BUSCO (Benchmarking Universal Single-Copy Orthologs), we can generate some information about whether genes are present or absent, fragmented across contigs, or whether they're present in the right number.
+
+Here we are performing a specific type of genome annotation, which attempts to identify a specific set of conserved genes, that are often only present in a single copy. If some of these genes are missing, it provides some evidence that our genome assembly may not be complete. Alternatively if these genes are found more than once, it provides some evidence that our assembly may have incorrectly duplicated some genomic regions.
+
+    ##Bash/command line code 
+    busco -m genome -i /scratch/ecoli_hiseq_spades/scaffolds.fasta -o Hiseq_busco --auto-lineage-prok
+
+### 
+
 ### 5.4. Quast report
 
 Before we move on to some other checks we are going to run the program quast, which performs a range of checks for you. We can run this as indicated below. For the purposes of demonstration we will use a reference genome to check our data against, but for a novel genome assembly we would not have this data.
+
+We are going to run this software with another form of annotation, to help us assess the quality of our genome assemblies. The Glimmer method is specifically designed to detect prokaryotic genes, without the need for additional data.
 
 1.  First find an E. coli k-12 reference genome on NCBI (https://www.ncbi.nlm.nih.gov/), as shown below.
 
@@ -80,30 +103,27 @@ Before we move on to some other checks we are going to run the program quast, wh
 
 5.  Right click on the file with the suffix "\_genomic.fna.gz" and copy the link.
 
-6.  Now in your unix terminal navigate to your home directory and paste the link after a "wget command", in the same format as below (make sure to paste in the correct link that you've copied).
+6.  Now in your Unix terminal navigate to your home directory and paste the link after a "wget command", in the same format as below (make sure to paste in the correct link that you've copied).
 
-```{=html}
 <!-- -->
-```
+
     wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_example/GCF_example_genomic.fna.gz
 
 7.  Now you are ready to run quast with your three previously assembled genomes.
 
-```{=html}
 <!-- -->
-```
+
     quast -r  GCF_000005845.2_ASM584v2_genomic.fna --circos --gene-finding --output-dir test_quast ./Hifi_ecoli.fa ./ecoli-oxford/ecoli.contigs.fasta ./ecoli_hiseq_spades/scaffolds.fasta  
 
 8.  Have a look at the quast report by loading the html file.
 
-```{=html}
-<!-- -->
-```
     firefox test_quast/report.html
+
+#### Q7:
 
 ## 6. More complex genomes {data-link="6. More complex genomes"}
 
-So far we have only considered a haploid bacterial genome, with a very small overall size. In such simple genomes an assembly graphs may suggest multiple paths through a given sequence due to repeating sequence, but we know that there is likely only one biologically real path through the graph. In diploid (and polyploid) organisms, this becomes more complicated because there are more than one real biological paths through the graph. These alternate paths are due to the presence of sister chromatids, that are not identical to each other, due to the presence of genetic variation, or heterozygosity. A key factor in assembling high quality genome assemblies, is the "phasing" of the chromosomes. It can be difficult to distinguish whether a given heterozygous region belongs to one chromosome copy or the other. Variation found along the same chromosome is in "linkage" or can be said to have the same "phase". A perfect genome assembly would reconstruct the variation from each chromosome perfectly as found in the original organism, however in practice this can be difficult to achieve. The figures below should help to explain this problem and the potential solutions.
+So far we have only considered a haploid bacterial genome, with a very small overall size. In such simple genomes an assembly graphs may suggest multiple paths through a given sequence due to repeating sequence, but we know that there is likely only one biologically real path through the graph. In diploid (and polyploid) organisms, this becomes more complicated because there are more than one real biological paths through the graph. These alternate paths are due to the presence of sister chromatids, that are not identical to each other, due to the presence of genetic variation, or heterozygosity. A key factor in assembling high quality genome assemblies, is the "phasing" of the chromosomes. It can be difficult to distinguish whether a given heterozygous region belongs to one chromosome copy or the other. Variation found on the same chromosome copy is in "linkage" or can be said to have the same "phase". A perfect genome assembly would reconstruct the variation from each chromosome perfectly as found in the original organism, however in practice this can be difficult to achieve. The figures below should help to explain this problem and explain potential solutions.
 
 ##### Figure 6: A common result from sequencing diploid genomes is the presence of redundant haplotypes in the final assembly, particularly for regions with have a high sequence divergence. Here we can see homozygous regions in orange, and a reconstructed reference contig which contains a mosaic of haplotypes from two different sister chromatids (indicated in yellow and blue).
 
@@ -118,3 +138,58 @@ So far we have only considered a haploid bacterial genome, with a very small ove
 ![](images/Screenshot%202022-10-24%20at%2017.37.51.png){fig-align="center"}
 
 ###### 
+
+## 7. RNA-seq gene annotation {data-link="6. More complex genomes"}
+
+Earlier, we used some different annotation methods to model some genes found in a simple bacterial genome. Now we are going to have a go at using additional data to find genes in a more complicated organism. We will be using a very recent high quality genome for the diamondback moth.
+
+### 7.1. Data download
+
+First let's download the genome data:
+
+    wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/932/276/165/GCF_932276165.1_ilPluXylo3.1/GCF_932276165.1_ilPluXylo3.1_genomic.fna.gz
+
+and also some RNA seq data. The tissue that RNA is sampled from is very important. RNA composition varies very dramatically between tissues, developmental stages and environmental conditions. This sample comes from an adult moth, and therefore may not contain genes that are very specific to other stages, such as ovum, caterpillar & pupae.
+
+    fasterq-dump SRR12674277
+
+### 7.2. Mapping
+
+Now in order to map the RNA-seq reads, we first need to index our genome.
+
+First, decompress the genome:
+
+    gunzip GCF_932276165.1_ilPluXylo3.1_genomic.fna.gz
+
+You can do this like so:
+
+    hisat2-build GCF_932276165.1_ilPluXylo3.1_genomic.fna GCF_932276165.1_ilPluXylo3.1_genomic_hisat2_index
+
+After a few minutes, we should have our genome indexed and ready for mapping. We can map our RNA-seq reads like this:
+
+    hisat2 -S SRR15042536.sam -p 55 --rna-strandness=FR -x $BOWTIE_INDEX -1 $INPUT_R1 -2 $INPUT_R2 --summary-file $OUTOUT_DIR.summary
+
+Now we need to sort the resulting file and convert it to a compressed bam format (SAM is the human-readable version). We can also index the resulting bam, for visualisation purposes.
+
+    samtools sort -o SRR15042536.sorted.bam SRR15042536.sam
+    samtools index SRR15042536.sorted.bam
+
+### 7.3. Transcript assembly
+
+Now that we have our mapped reads, we can use the information to produce some gene models.
+
+    stringtie -o SRR15042536.gff SRR15042536.sorted.bam
+
+You can now have a look at the annotation you've produced as well as the mapped read and see how the program is able to use RNA slignment evidence to build gene models.
+
+First start IGV by inputting the command:
+
+    igv
+
+This should open a new GUI window. First load your genome, by clicking Genomes -\> Load Genome From File. Then you can load the sorted.bam file and the gff, by clicking File -\> Load from file.
+
+## 8. Homology gene annotation {data-link="6. More complex genomes"}
+
+An alternative way to infer the presence of a gene is to use amino-acid sequences from closely related organisms. For many important protein sequences, purifying selection eliminates mutations that alter the amino-acid sequence, however coding sequences are still able to accumulate mutations in certain positions due to the fact that more multiple codon sequences are able to code for the same amino-acid.
+
+![](images/Screenshot%202022-11-02%20at%2015.02.13.png){fig-align="center"}
