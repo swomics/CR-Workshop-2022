@@ -5,49 +5,22 @@ editor: visual
 output: html_document 
 ---
 
-## Introduction
+## Active learning time!
 
-In the previous two sessions, you will have gained some experience assembling genomes and assessing their quality. Today we will do some comparative analysis, that should allow you to start addressing some biological questions with the data.
+In the previous sessions, we've had some hands on time running different programs and hopefully gaining an idea of the types of information we can extract from genomic data. Today I would like you to split into groups and attempt to formulate an evolutionary hypothesis that could be investigated using genomic data and the methods we have covered.
 
-Today we will be working on some larger butterfly data sets, retrieved from the Darwin Tree of Life project (DToL). The majority of my previous research has been focused on the butterflies and moths (Lepidoptera). This is because the group contains a large number of pests and many species have received significant amounts of research attention over the previous century, particularly in Britain. This provides us with a wealth of [ecological](https://species.nbnatlas.org/species/NHMSYS0000841034) and [digitised specimen](https://data.nhm.ac.uk/dataset/56e711e6-c847-4f99-915a-6894bb5c5dea/resource/05ff2255-c38a-40c9-b657-4ccb55ab2feb?q=Lepidoptera&view_id=203a0ae5-6a14-480a-a407-27eeb9373858&filters=_has_image%3Atrue%7CtypeStatus%3Atype&field=associatedMediaCount&value=) data to link our genomic data to, which is key for formulating and corroborating hypotheses.
+You've learned how to use genomic data to estimate heterozygosity for an organism, how to look for endosymbiotic bacteria, how to find genes and organise them into orthologous groups and trees. You've also learned how to compare genomes at a chromosome level. Using the DToL Lepidoptera species, we can think about linking these types of data across multiple species to a [database of ecological traits](https://catalogue.ceh.ac.uk/documents/5b5a13b6-2304-47e3-9c9d-35237d1232c6). This database includes data on long and short term population size trends, host-plant specificity, phenological shifts and more!
 
-One interesting phenomenon observed in this group, is that the chromosome contents and order of genes (also known as shared-synteny) is remarkably conserved, when compared to other arthropod orders.
+You don't have to worry about completing the project rigorously, this is simply an opportunity to begin thinking about how genomic data can be applied to ask biological questions
 
-## 8. Genome alignment
+Here are some example hypotheses you could think about:
 
-We are going to download some datasets, you may choose five species from the following list:
+-   Do long term population declines predict reduced levels of heterozygosity? ([paper](https://www.pure.ed.ac.uk/ws/portalfiles/portal/105263079/s41467_019_11308_4.pdf))
 
-| Name (common)                               | NCBI RefSeq accession                                                                                     |
-|---------------------------------------------|-----------------------------------------------------------------------------------------------------------|
-| Melitaea cinxia (Glanville fritillary)      | [GCF_905220565.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/220/565/GCF_905220565.1_ilMelCinx1.1/) |
-| Pararge aegeria (specked wood butterfly)    | [GCF_905163445.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/163/445/GCF_905163445.1_ilParAegt1.1/) |
-| Nymphalis io (European peacock)             | [GCF_905147045.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/147/045/GCF_905147045.1_ilAglIoxx1.1/) |
-| Vanessa cardui (painted lady)               | [GCF_905220365.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/220/365/GCF_905220365.1_ilVanCard2.1/) |
-| Leptidea sinapis (wood white)               | [GCF_905404315.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/404/315/GCF_905404315.1_ilLepSina1.1/) |
-| Maniola jurtina (meadow brown)              | [GCF_905333055.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/333/055/GCF_905333055.1_ilManJurt1.1/) |
-| Vanessa atalanta (red admiral)              | [GCF_905147765.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/147/765/GCF_905147765.1_ilVanAtal1.2/) |
-| Plutella xylostella (diamondback moth)      | [GCF_932276165.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/932/276/165/GCF_932276165.1_ilPluXylo3.1/) |
-| Pieris rapae (cabbage white)                | [GCF_905147795.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/147/795/GCF_905147795.1_ilPieRapa1.1/) |
-| Pieris brassicae (large cabbage white)      | [GCF_905147105.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/147/105/GCF_905147105.1_ilPieBrab1.1/) |
-| Colias croceus (clouded yellow)             | [GCF_905220415.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/220/415/GCF_905220415.1_ilColCroc2.1/) |
-| Papilio machaon (common yellow swallowtail) | [GCF_912999745.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/912/999/745/GCF_912999745.1_ilPapMach1.1/) |
-| Pieris napi (green-veined white)            | [GCF_905475465.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/475/465/GCF_905475465.1_ilPieNapi1.2/) |
-| Aricia agestis (brown argus)                | [GCF_905147365.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/147/365/GCF_905147365.1_ilAriAges1.1/) |
+-   Do polyphagous species have greater numbers of duplicated genes? ([paper](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-016-3096-1#Sec2))
 
-In section 5.4 we downloaded an E. coli reference genome. You will need to perform this same process for each of your 5 chosen species.
+-   Do species that pupate in shared environments share similar endosymbionts? ([paper](https://www.pnas.org/doi/10.1073/pnas.2115608119))
 
-### 8.1. Pairwise genomic sequence alignment
+-   Do closely related species have similar genome size? ([paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5552920/))
 
-Once you have the genomic fasta files downloaded, we can try out a pairwise genomic alignment between two of your species. We'll use the tool minimap2, which was designed to map long sequences to a genome, such as pacbio reads, however using specific parameters we can also use it to perform alignments between species that are not too distantly related (i.e. within the same Family, or Order).
-
-Using two fasta files we can compute a "paf" alignment file (here I use Aricia agestis and Vanessa cardui), like so:
-
-    ~/bin/minimap2/minimap2 -PD -x asm5 -t 16 GCF_905147365.1_ilAriAges1.1_genomic.fna GCF_905220365.1_ilVanCard2.1_genomic.fna  > AriAges_VanCard.paf
-
-We can then use an R script to convert this alignment into a dotplot style figure. This type of figure represents a query genome on one axis and a target genome on the other axis. Dots correspond to matches between the two sets of sequences. Some dots will appear across many different chromosomes, these matches are likely to correspond to repetitive sequences such as transposable elements. Other matches form intermittent diagonal lines, and are likely to represent orthologous regions of the genome. When the angles of these diagonal lines change direction, they may represent "inversion" polymorphisms. This type of polymorphism occurs, when a large section of a chromosome flips-over (inverts), due to a breakage and erroneous repair.
-
-    ~/bin/dotPlotly/pafCoordsDotPlotly.R -i ColCroc_AriAges.paf -o ColCroc_AriAges.out -s -t -m 1500 -q 500000
-
-### 8.2. Gene-based alignment
-
-## 9. Annotating a challenging gene
+You will need to think about how you will gather the genomic and ecological data, and how your resulting graphs might look.

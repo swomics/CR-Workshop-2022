@@ -9,21 +9,30 @@ output: html_document
 
 Today we will be discussing and performing Genome assembly. Assembly refers to the translation of raw sequencing data into a representation of the source DNA genome. You will learn about the types of data and algorithms you can use to accomplish this, their advantages and disadvantages and how you might accomplish this. Since this is the first day of the workshop, we will also spend some time covering the Unix command line environment and how you can interact with it during this workshop.
 
-[1. Logging on to the computing environment]
-
-[2. Platforms & Formats](#dna-sequence-data-platforms-formats)
-
-[3. Pre-Assembly QC]
-
-[4. Assembly]
-
-\[5. Post-Assembly QC\]
-
-\[6. More complex genomes\]
-
 ## 1. Logging on to the computing environment
 
-TBC
+Please read through the [Kabré user guide](https://kabre.cenat.ac.cr/guia-usuario/). You will need to submit the commands in this tutorial using the SLURM scripts.
+
+You can write a new SLURM script for each command you run, like this:
+
+    nano example_script.slurm
+
+You can then populate the script with job parameters and the command. Here's an example from the guide:
+
+    #!/bin/bash
+    #SBATCH --job-name=pi_threads
+    #SBATCH --output=result.txt
+    #SBATCH --partition=nu
+    #SBATCH --ntasks=1
+    #SBATCH --time=00:10:00
+
+    module load example_module
+
+    srun example_program -p example_parameter
+
+You can then run the script like so:
+
+    sbatch example_script.slurm
 
 ## 2. Platforms & Formats {#dna-sequence-data-platforms-formats}
 
@@ -398,7 +407,7 @@ C. An organism with more than two copies of each Chromosome, has what type of pl
 
 D. In Figure 2, why does the PacBio CLR data have more k-mers in the red region?
 
-### 3.3 Contamination
+### 3.3 Contamination/Endosymbionts
 
 Despite best intentions, non-target DNA is often included in whole genome sequencing experiments. The level of contaminant DNA may be altered by the organisms size, preservation, storage, parasitism, endosymbionts and other factors. It can be useful to screen sequencing read data for contamination. If the level is low it may be possible to filter out contaminant reads pre-assembly, or contaminant contigs post-assembly (although erroneous incorporation into the target genome is possible) (Koutsovoulos *et al.,* 2016).
 
@@ -663,13 +672,3 @@ A. De brujn graphs are a useful method for which kind of data?
 B. Longer k-mers may help produce more contiguous assemblies. True or False?
 
 C. OLC graphs are a useful method for which kind of data?
-
-###### References:
-
-\[1\] E. A. Ellis, C. G. Storer, and A. Y. Kawahara, "De novo genome assemblies of butterflies," Gigascience, vol. 10, no. 6, pp. 1--8, 2021.
-
-\[2\] S. Celton-Morizur and C. Desdouets, Polyploidization of liver cells, vol. 676. 2010.
-
-\[3\] S. E. Aamidor, B. Yagound, I. Ronai, and B. P. Oldroyd, "Sex mosaics in the honeybee: How haplodiploidy makes possible the evolution of novel forms of reproduction in social Hymenoptera," Biol. Lett., vol. 14, no. 11, 2018.
-
-https://www.pnas.org/doi/10.1073/pnas.1600338113
