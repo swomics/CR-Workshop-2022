@@ -225,7 +225,7 @@ Let's have a look at the k-mer content to find out more about our dataset and ou
     #you may need to adjust the x and y axis limits, depending on the data.
     ggplot(data=HiSeq_kmers,aes(x=V1,y=V2)) + geom_point() + xlim(0,500) + ylim(0,100000)
 
-We can also feed our data into another program (genomescope), which is able to fit a model to the histogram and calculate some predictions about the genome properties, such as genome size, heterozygosity (if present), repetitiveness and sequencing coverage.
+We can also feed our data into another program ([genomescope](https://www.nature.com/articles/s41467-020-14998-3)), which is able to fit a model to the histogram and calculate some predictions about the genome properties, such as genome size, heterozygosity (if present), repetitiveness and sequencing coverage.
 
     ##Bash/command line code
     genomescope.R ecoli_HiSeqX.histo 21 150 hiseq_genomescope
@@ -411,7 +411,7 @@ D. In Figure 2, why does the PacBio CLR data have more k-mers in the red region?
 
 Despite best intentions, non-target DNA is often included in whole genome sequencing experiments. The level of contaminant DNA may be altered by the organisms size, preservation, storage, parasitism, endosymbionts and other factors. It can be useful to screen sequencing read data for contamination. If the level is low it may be possible to filter out contaminant reads pre-assembly, or contaminant contigs post-assembly (although erroneous incorporation into the target genome is possible) (Koutsovoulos *et al.,* 2016).
 
-Here's a command that you could use to screen your sequencing reads for contaminant DNA.
+Here's a program called [mash](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1841-x), that you could use to screen your sequencing reads for contaminant DNA.
 
     ##Bash/command line code
 
@@ -430,7 +430,7 @@ B. Should you filter out contaminant DNA before or after assembly?
 
 Prior to assembly, it can be useful to check whether there are any potential issues with our data. One important consideration is adapter contamination. Adapters are runs of a known synthetic sequence that is often used as part of high throughput sequencing reactions. Sometimes traces of these synthetic sequences are present in sequencing reads and must be removed for the associated biological sequence.
 
-We can use a tool called fastqc to generate a useful report, like this:
+We can use a tool called [fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to generate a useful report, like this:
 
     fastqc SRR18106304.fastq
 
@@ -581,7 +581,7 @@ plot.igraph(g,edge.arrow.size = 0.5)
 
 ```
 
-Let's have a go at running a full de bruijn graph assembly on the Illumina reads, using the program Spades. This program is able to use k-mers of multiple lengths and combine the resulting graphs for a more contiguous assembly.
+Let's have a go at running a full de bruijn graph assembly on the Illumina reads, using the program [Spades](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3342519/). This program is able to use k-mers of multiple lengths and combine the resulting graphs for a more contiguous assembly.
 
     ##Bash/command line code
     nohup spades.py -s SRR18106304.fastq -o ecoli_hiseq_spades &
@@ -655,12 +655,12 @@ plot.igraph(g, edge.arrow.size = 0.5)
 
 ```
 
-Let's have a go at running an OLC assembly using long high quality HiFi reads, using the program hifiasm. This program is able to utilise the high quality and long read lengths of HiFi data, to produce some of the highest quality genome reconstructions available, often without supplementary data.
+Let's have a go at running an OLC assembly using long high quality HiFi reads, using the program [hifiasm](https://www.nature.com/articles/s41592-020-01056-5). This program is able to utilise the high quality and long read lengths of HiFi data, to produce some of the highest quality genome reconstructions available, often without supplementary data.
 
     ##Bash/command line code
     hifiasm -t 16 SRR10971019.fastq -o hifi_ecoli
 
-Let's also have a go at running an OLC assembly using long nanopore (nanopore chemistry version 10.3) reads, using the program canu.
+Let's also have a go at running an OLC assembly using long nanopore (nanopore chemistry version 10.3) reads, using the program [canu](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5411767/).
 
     ##Bash/command line code
     ~/bin/canu-1.9/Linux-amd64/bin/canu -p ecoli -d ecoli-oxford useGrid=false genomeSize=4.8m -nanopore-raw ERR3890216.fastq

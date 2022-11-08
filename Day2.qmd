@@ -83,6 +83,8 @@ Here we are performing a specific type of genome annotation, which attempts to i
     ##Bash/command line code 
     busco -m genome -i /scratch/ecoli_hiseq_spades/scaffolds.fasta -o Hiseq_busco --auto-lineage-prok
 
+Have a browse through the output files in the output folder Hiseq_busco and see if you can find out how complete this genome assembly is. You can also generate an analysis for the other genomes you assembled yesterday (make sure to change the name of the output file!) and compare the results.
+
 ### 5.4. Quast report
 
 Before we move on to some other checks we are going to run the program quast, which performs a range of checks for you. We can run this as indicated below. For the purposes of demonstration we will use a reference genome to check our data against, but for a novel genome assembly we would not have this data.
@@ -131,72 +133,7 @@ So far we have only considered a haploid bacterial genome, with a very small ove
 
 ###### 
 
-## 7. RNA-seq gene annotation {data-link="6. More complex genomes"}
-
-Earlier, we used some different annotation methods to model some genes found in a simple bacterial genome. Now we are going to have a go at using additional data to find genes in a more complicated organism. We will be using a very recent high quality genome for the diamondback moth.
-
-### 7.1. Data download
-
-First let's download the genome data:
-
-    wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/932/276/165/GCF_932276165.1_ilPluXylo3.1/GCF_932276165.1_ilPluXylo3.1_genomic.fna.gz
-
-and also some RNA seq data. The tissue that RNA is sampled from is very important. RNA composition varies very dramatically between tissues, developmental stages and environmental conditions. This sample comes from an adult moth, and therefore may not contain genes that are very specific to other stages, such as ovum, caterpillar & pupae.
-
-    fasterq-dump SRR12674277
-
-### 7.2. Mapping
-
-Now in order to map the RNA-seq reads, we first need to index our genome.
-
-First, decompress the genome:
-
-    gunzip GCF_932276165.1_ilPluXylo3.1_genomic.fna.gz
-
-You can do this like so:
-
-    hisat2-build GCF_932276165.1_ilPluXylo3.1_genomic.fna GCF_932276165.1_ilPluXylo3.1_genomic_hisat2_index
-
-After a few minutes, we should have our genome indexed and ready for mapping. We can map our RNA-seq reads like this:
-
-    hisat2 -S SRR15042536.sam -p 55 --rna-strandness=FR -x $BOWTIE_INDEX -1 $INPUT_R1 -2 $INPUT_R2 --summary-file $OUTOUT_DIR.summary
-
-Now we need to sort the resulting file and convert it to a compressed bam format (SAM is the human-readable version). We can also index the resulting bam, for visualisation purposes.
-
-    samtools sort -o SRR15042536.sorted.bam SRR15042536.sam
-    samtools index SRR15042536.sorted.bam
-
-### 7.3. Transcript assembly
-
-Now that we have our mapped reads, we can use the information to produce some gene models.
-
-    stringtie -o SRR15042536.gff SRR15042536.sorted.bam
-
-You can now have a look at the annotation you've produced as well as the mapped read and see how the program is able to use RNA slignment evidence to build gene models.
-
-First start IGV by inputting the command:
-
-    igv
-
-This should open a new GUI window. First load your genome, by clicking Genomes -\> Load Genome From File. Then you can load the sorted.bam file and the gff, by clicking File -\> Load from file.
-
-## 8. Homology gene annotation {data-link="6. More complex genomes"}
-
-An alternative way to infer the presence of a gene is to use amino-acid sequences from closely related organisms. For many important protein sequences, purifying selection eliminates mutations that alter the amino-acid sequence, however coding sequences are still able to accumulate mutations in certain positions due to the fact that more multiple codon sequences are able to code for the same amino-acid.
-
-![](images/Screenshot%202022-11-02%20at%2015.02.13.png){fig-align="center"}
-
-We will align some proteins for a very fast evolving gene and see how they compare to the RNA-seq data you've mapped. Here' we'll take a selection of the same protein from different organisms and see how their different levels of evolutionary divergence interferes with the alignment process.
-
-Aligning proteins with miniprot is very simple, the minimal command is:
-
-    miniprot -t8 --gff GCF_932276165.1_ilPluXylo3.1_genomic.fna Masc_multiSpecies_aa.fasta > prot1.gff
-
-We can also tweak some of the parameters, and see how it affects the alignment:
-
-    miniprot  -n 3 -s 3 -k 5 -l 3 -j 1 -t8 --gff GCF_932276165.1_ilPluXylo3.1_genomic.fna Masc_multiSpecies_aa.fasta > prot2.gff
-
-## 9. Genome alignment
+## 7. Genome alignment
 
 We are going to download some datasets, you may choose two species from the following list to align:
 
@@ -228,3 +165,93 @@ Using two fasta files we can compute a "paf" alignment file (here I use Aricia a
 We can then use an R script to convert this alignment into a dotplot style figure. This type of figure represents a query genome on one axis and a target genome on the other axis. Dots correspond to matches between the two sets of sequences. Some dots will appear across many different chromosomes, these matches are likely to correspond to repetitive sequences such as transposable elements. Other matches form intermittent diagonal lines, and are likely to represent orthologous regions of the genome. When the angles of these diagonal lines change direction, they may represent "inversion" polymorphisms. This type of polymorphism occurs, when a large section of a chromosome flips-over (inverts), due to a breakage and erroneous repair.
 
     ~/bin/dotPlotly/pafCoordsDotPlotly.R -i ColCroc_AriAges.paf -o ColCroc_AriAges.out -s -t -m 1500 -q 500000
+
+## 8. RNA-seq gene annotation {data-link="6. More complex genomes"}
+
+Earlier, we used some different annotation methods to model some genes found in a simple bacterial genome. Now we are going to have a go at using additional data to find genes in a more complicated organism. We will be using a very recent high quality genome for the diamondback moth.
+
+### 8.1. Data download
+
+First let's download the genome data:
+
+    wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/932/276/165/GCF_932276165.1_ilPluXylo3.1/GCF_932276165.1_ilPluXylo3.1_genomic.fna.gz
+
+and also some RNA seq data. The tissue that RNA is sampled from is very important. RNA composition varies very dramatically between tissues, developmental stages and environmental conditions. This sample comes from an adult moth, and therefore may not contain genes that are very specific to other stages, such as ovum, caterpillar & pupae.
+
+    fasterq-dump SRR12674277
+
+### 8.2. Mapping
+
+Now in order to map the RNA-seq reads, we first need to index our genome.
+
+First, decompress the genome:
+
+    gunzip GCF_932276165.1_ilPluXylo3.1_genomic.fna.gz
+
+You can do this like so:
+
+    hisat2-build GCF_932276165.1_ilPluXylo3.1_genomic.fna GCF_932276165.1_ilPluXylo3.1_genomic_hisat2_index
+
+After a few minutes, we should have our genome indexed and ready for mapping. We can map our RNA-seq reads like this:
+
+    hisat2 -S SRR15042536.sam -p 55 --rna-strandness=FR -x $BOWTIE_INDEX -1 $INPUT_R1 -2 $INPUT_R2 --summary-file $OUTOUT_DIR.summary
+
+Now we need to sort the resulting file and convert it to a compressed bam format (SAM is the human-readable version). We can also index the resulting bam, for visualisation purposes.
+
+    samtools sort -o SRR15042536.sorted.bam SRR15042536.sam
+    samtools index SRR15042536.sorted.bam
+
+### 8.3. Transcript assembly
+
+Now that we have our mapped reads, we can use the information to produce some gene models.
+
+    stringtie -o SRR15042536.gff SRR15042536.sorted.bam
+
+You can now have a look at the annotation you've produced as well as the mapped read and see how the program is able to use RNA alignment evidence to build gene models.
+
+First start IGV by inputting the command:
+
+    igv
+
+This should open a new GUI window. First load your genome, by clicking Genomes -\> Load Genome From File. Then you can load the sorted.bam file and the gff, by clicking File -\> Load from file.
+
+## 9. Homology gene annotation {data-link="6. More complex genomes"}
+
+An alternative way to infer the presence of a gene is to use amino-acid sequences from closely related organisms. For many important protein sequences, purifying selection eliminates mutations that alter the amino-acid sequence, however coding sequences are still able to accumulate mutations in certain positions due to the fact that more multiple codon sequences are able to code for the same amino-acid.
+
+![](images/Screenshot%202022-11-02%20at%2015.02.13.png){fig-align="center"}
+
+We will align some proteins for a very fast evolving gene and see how they compare to the RNA-seq data you've mapped. Here' we'll take a selection of the same protein from different organisms and see how their different levels of evolutionary divergence interferes with the alignment process.
+
+Aligning proteins with miniprot is very simple, the minimal command is:
+
+    miniprot -t8 --gff GCF_932276165.1_ilPluXylo3.1_genomic.fna Masc_multiSpecies_aa.fasta > prot1.gff
+
+We can also tweak some of the parameters, and see how it affects the alignment:
+
+    miniprot  -n 3 -s 3 -k 5 -l 3 -j 1 -t8 --gff GCF_932276165.1_ilPluXylo3.1_genomic.fna Masc_multiSpecies_aa.fasta > prot2.gff
+
+## 10. Homology gene clustering {data-link="6. More complex genomes"}
+
+The determination of shared ancestry between genes in divergent species is a complex process. Reproductive isolation and other processes lead to varying levels of sequence divergence along different branches of an evolutionary tree. Genes may also become duplicated or rearranged, gain or lose specific functions. Interestingly, the evolutionary history of individual genes, may be radically different from a species tree, due to processes such as Incomplete lineage sorting, trans-species polymorphism (e.g. via balancing selection) and molecular convergence (see [here](https://github.com/davidemms/OrthoFinder#orthogroups-orthologs--paralogs)). Thus, we may need to compare the trees of many genes to assess the true evolutionary tree of the species themselves.
+
+A useful program [orthofinder](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1832-y), provides many of these functions in an automated tool. Let's download some protein data for five of the butterfly species in the table above (more species will take more time to run).
+
+1.  First make a new directory called orthofinder_1 and move into that folder.
+
+        mkdir orthofinder_1
+        cd orthofinder_1
+
+2.  Then, navigate to the FTP site for each species using the links above, then right click and copy the link to the "\_protein.faa.gz" files. Use the wget command to copy the data into the new folder like so:
+
+        wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/220/565/GCF_905220565.1_ilMelCinx1.1/GCF_905220565.1_ilMelCinx1.1_protein.faa.gz
+
+3.  Decompress the protein files like this:
+
+        GCF_905220565.1_ilMelCinx1.1_protein.faa.gz
+
+4.  Once all the files are decompressed, you can run orthofinder like this:
+
+        orthofinder -f ~/orthofinder_1
+
+5.  This might take a little bit of time, but once complete, it is worth looking through the resulting output files (see [here](https://davidemms.github.io/orthofinder_tutorials/exploring-orthofinders-results.html)). In particular you should now have a resolved species tree, and also trees for all genes in the inferred orthogroups. A simple way of viewing this data is to paste it into this [website](http://etetoolkit.org/treeview/).
