@@ -453,6 +453,8 @@ Here's a program called [mash](https://genomebiology.biomedcentral.com/articles/
     mash screen refseq.genomes.k21s1000.msh SRR18106304.fastq > screen.tab
     sort -gr screen.tab | head
 
+The first column of the output is the identity score. It is a metric of the fraction of bases shared between the genome and your sequencing reads (this is estimated from the fraction of shared *k*-mers), and so high values indicate a likely presence of a species in your data.
+
 #### Q5:
 
 A. Do any of our datasets contain contaminant DNA?
