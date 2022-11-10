@@ -254,4 +254,4 @@ A useful program [orthofinder](https://genomebiology.biomedcentral.com/articles/
 
         orthofinder -f ~/orthofinder_1
 
-5.  This might take a little bit of time, but once complete, it is worth looking through the resulting output files (see [here](https://davidemms.github.io/orthofinder_tutorials/exploring-orthofinders-results.html)). In particular you should now have a resolved species tree, and also trees for all genes in the inferred orthogroups. A simple way of viewing this data is to paste it into this [website](http://etetoolkit.org/treeview/).
+5.  This might take a little bit of time (there is a pre-computed output folder in the /home/taller-2019/Workshop_materials/ folder), but once complete, it is worth looking through the resulting output files (see [here](https://davidemms.github.io/orthofinder_tutorials/exploring-orthofinders-results.html)). In particular you should now have a resolved species tree, and also trees for all genes in the inferred orthogroups. A simple way of viewing this data is to paste it into this [website](http://etetoolkit.org/treeview/).
