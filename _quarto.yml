@@ -15,7 +15,6 @@ website:
         file: Day2.qmd
       - text: "Day 3"
         file: Day3.qmd
-      - about.qmd       
 
 format:
   html:

@@ -127,7 +127,7 @@ So far we have only considered a haploid bacterial genome, with a very small ove
 
 ![](images/Screenshot%202022-10-24%20at%2017.37.37.png){fig-align="center"}
 
-##### Figure 7: Another way to utilise parental data is to use the k-mers during the construction of the assembly graph itself. Specifically, we can identify bubble structures that are likely to represent heterozygous regions and look for parent specific k-0mers in the alternate paths. Crucially, this approach requires high accuracy long reads such as HiFi data to work successfully.
+##### Figure 7: Another way to utilise parental data is to use the k-mers during the construction of the assembly graph itself. Specifically, we can identify bubble structures that are likely to represent heterozygous regions and look for parent specific k-mers in the alternate paths. Crucially, this approach requires high accuracy long reads such as HiFi data to work successfully.
 
 ![](images/Screenshot%202022-10-24%20at%2017.37.51.png){fig-align="center"}
 

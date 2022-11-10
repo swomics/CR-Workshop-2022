@@ -7,22 +7,36 @@ output: html_document
 
 ## Introduction
 
-Today we will be discussing and performing Genome assembly. Assembly refers to the translation of raw sequencing data into a representation of the source DNA genome. You will learn about the types of data and algorithms you can use to accomplish this, their advantages and disadvantages and how you might accomplish this. Since this is the first day of the workshop, we will also spend some time covering the Unix command line environment and how you can interact with it during this workshop.
+Today we will be discussing and performing Genome assembly. Assembly refers to the translation of raw sequencing data into a representation of the source DNA genome. You will learn about the types of data and algorithms you can use to accomplish this, their advantages and disadvantages. Since this is the first day of the workshop, we will also need some time to get comfortable running software on the computing facility.
+
+::: callout-important
+## I have included some questions for the first day. This is not a test! They are just to help us check whether important information is missing and to create opportunities to ask for help.
+:::
 
 ## 1. Logging on to the computing environment
 
-Please read through the [Kabré user guide](https://kabre.cenat.ac.cr/guia-usuario/). You will need to submit the commands in this tutorial using the SLURM scripts.
+Please read through the [Kabré user guide](https://kabre.cenat.ac.cr/guia-usuario/). You will need to submit the commands in this tutorial using SLURM scripts.
 
-You can write a new SLURM script for each command you run, like this:
+A SLURM script contains some parameters for the program you wish to run, and can also allocate your "job" to different types of computer. The "partition" (the types of computers available) you choose is important. For most tasks, something like nu-wide would be suitable, since they have moderate RAM size and CPU number. For very computationally difficult tasks such as genome assembly, dribe-long would be more suitable. This is because genome assembly often requires large amounts of memory and high numbers of CPUs to complete in a reasonable time-frame.
+
+::: callout-important
+## Since there are many people in the workshop, who will try to submit jobs at the same time, we are likely to have issues with jobs taking a long time to finish. I will try to provide access to all the data required in the folder /home/taller-2019/Workshop_materials/. I will also try to provide access to the expected results files. I have included URL links within the explanatory text, which links to the primary literature. Reading further might be worth doing, if you are interested in the methodological details.
+:::
+
+You can check which jobs are "queued" and which partitions are very busy, with the command:
+
+    squeue
+
+To submit your own script. You can write a new SLURM script for a specific program command, like this:
 
     nano example_script.slurm
 
-You can then populate the script with job parameters and the command. Here's an example from the guide:
+Here's an example script, which has some queue parameters (#SBATCH), loading the correct programs (module load), and then the program command itself (srun ...):
 
     #!/bin/bash
     #SBATCH --job-name=pi_threads
     #SBATCH --output=result.txt
-    #SBATCH --partition=nu
+    #SBATCH --partition=nu-wide
     #SBATCH --ntasks=1
     #SBATCH --time=00:10:00
 
@@ -30,9 +44,17 @@ You can then populate the script with job parameters and the command. Here's an 
 
     srun example_program -p example_parameter
 
-You can then run the script like so:
+You can then save and close the script with Ctrl + X, followed by Y. Then you can run the script like so:
 
     sbatch example_script.slurm
+
+You may need to find the appropriate module for your command, by running:
+
+    module avail
+
+Once you find the correct module for the command you wish to run, you would copy it from this list into your SLURM script, like so:
+
+    module load jellyfish/2.3.0
 
 ## 2. Platforms & Formats {#dna-sequence-data-platforms-formats}
 
@@ -55,9 +77,9 @@ Nanopore sensing (Oxford Nanopore Technologies)
 ```{=html}
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/RcP85JHLmnI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 ```
-The field is constantly changing, but in recent years, Illumina paired reads have been considered accurate and cheap, however due to their short lengths, they are more suitable for population-level SNP and small indel variant detection, than genome assembly. PacBio and Nanopore reads in the recent past were much longer than Illumina reads, but had high error rates, and could be expensive. These reads were considered better for genome assembly projects, sometimes in combination with more accurate Illumina reads (a.k.a hybrid assembly). Currently, PacBio and Nanopore reads have improved considerably in quality, however remain expensive options. The combination of long read length and high accuracy is the most appropriate data for genome assembly. Novel DNA preparation techniques such as "haplotagging" are likely to prolong the advantages of Illumina reads, by enabling the detection and long-range linkage of SNPs.
+The field is constantly changing, but in recent years, Illumina paired reads have been considered accurate and cheap, however due to their short lengths, they are more suitable for population-level SNP and small indel variant detection, than genome assembly. PacBio and Nanopore reads in the recent past were much longer than Illumina reads, but had high error rates, and could be expensive. These reads were considered better for genome assembly projects, sometimes in combination with more accurate Illumina reads (a.k.a hybrid assembly). Currently, PacBio and Nanopore reads have improved considerably in quality, however remain expensive options. The combination of long read length and high accuracy is the most appropriate data for genome assembly. Novel DNA preparation techniques such as "[haplotagging](https://www.pnas.org/doi/10.1073/pnas.2015005118)" are likely to prolong the advantages of Illumina reads, by enabling the detection and long-range linkage of SNPs.
 
-Below you can see an interactive plot of different data sets in the Sequence Read Archive (SRA), highlighting differences in read length produced by the different platforms. A recent review of genome assemblies for Lepidopteran (butterfly/moth) genomes suggested that PacBio HiFi data is currently the best performing approach for assembly (Ellis *et al.,* 2021). We will come back to this in the assembly section below.
+Below you can see an interactive plot of different data sets in the Sequence Read Archive (SRA), highlighting differences in read length produced by the different platforms. A recent review of genome assemblies for Lepidopteran (butterfly/moth) genomes suggested that PacBio HiFi data is [currently the best performing approach for assembly](https://academic.oup.com/gigascience/article/10/6/giab041/6291117). We will come back to this later in the assembly section.
 
 ##### Figure 1: A comparative overview of different DNA sequencing technologies (restricted to Order: Lepidoptera datasets)
 
@@ -113,13 +135,15 @@ fig
 
 ```
 
-Let's download some data to explore today from the Sequence Read Archive (SRA). We'll be using E. coli bacteria, because it has a small genome size and is therefore has a lower computational burden, but the general principles we'll explore can be applied to other organisms (with some caveats).
+Let's have a look at some public data from the Sequence Read Archive (SRA). We'll be using E. coli bacteria, because it has a small genome size and is therefore has a lower computational burden, but the general principles we'll explore can be applied to other organisms (with some caveats).
+
+Typically you could download the reads associated with an SRA accession using the commands below, but it can take some time, so today you can access pre-downloaded data from the path /home/taller-2019/Workshop_materials/.
 
     fasterq-dump SRR18106304
     fasterq-dump SRR10971019
     fasterq-dump ERR1674581
 
-These commands should download the "fastq" formatted data from these experiments, if you want to find out more about the experiment you can search the dataset on https://www.ncbi.nlm.nih.gov/.
+These commands should download the "fastq" formatted data from these experiments, if you want to find out more about the experiment you can search the accession code (e.g. SRR18106304) on https://www.ncbi.nlm.nih.gov/.
 
 #### Q1:
 
@@ -182,42 +206,54 @@ B. The Sequence Read Archive (SRA) contains what type of data?
 
 The type of sequencing and assembly you may want to do can depend on your study organism. Some species have intrinsically more or less complex genomes. There are a few important considerations that can inform your strategy, but sometimes it is difficult to know what these may be without data. Some major considerations are; **sequencing coverage**, **ploidy**, **heterozygosity**, **repeat density and repeat structure**.
 
-One useful initial QC procedure to follow is to break down sequencing reads into short (for instance 21bp) overlapping sub-strings called *k-*mers (in this case we would call them 21-mers) to allow us to get a more accurate assessment of genome properties. *k-*mers are useful because some sequencing reads contain errors. By breaking down reads into sub-strings, we can distinguish errors from none errors, based on the number of times they appear in the dataset (error k-mers hould be very rare, whereas "real" biological data should appear at a frequency dependent on the sequencing coverage).
-
 ### 3.1. Sequencing coverage
 
 Sequencing coverage is the number of times that any given base-pair in your genome appears in your sequencing read data. Put another way, it is the ratio of sequence read data to actual genome size, so if we imagine a 100Mbp haploid genome and we have 1Gbp of sequencing data, we would estimate that we have a sequencing coverage of 10. In practice, this estimate is usually roughly accurate for the median coverage value, but due to the random probability of sampling in combination with sequencing bias, coverage varies according to a distribution.
 
-Let's have a look at our datasets again. First, let's have a look at the basic statistics for the HiFi data using the BBTools suite.
+Let's have a look at our datasets again. First, let's have a look at the basic statistics for the HiFi data using the BBTools suite. The command is written like this:
 
     ##Bash/command line code
     reformat.sh in1=SRR10971019.fastq lhist=HiFi_length.txt
 
-    java -ea -Xms300m -cp /pub66/samw/bin/miniconda3/envs/CR_workshop/opt/bbmap-39.00-0/current/ jgi.ReformatReads in1=SRR10971019.fastq lhist=HiFi_length.txt
-    Executing jgi.ReformatReads [in1=SRR10971019.fastq, lhist=HiFi_length.txt]
+To help you get started I will give you an example SLURM script which you can copy to run this command:
 
-    Set length histogram output to Illumina_length.txt
-    No output stream specified.  To write to stdout, please specify 'out=stdout.fq' or similar.
-    Input is being processed as unpaired
-    Input:                      95514 reads             1389500381 bases
-    Output:                     95514 reads (100.00%)   1389500381 bases (100.00%)
+    #!/bin/bash
+    #SBATCH --job-name=bb_reformat
+    #SBATCH --output=reformat_result.txt
+    #SBATCH --partition=nu-wide
+    #SBATCH --ntasks=1
+    #SBATCH --time=0:10:00
 
-    Time:                           6.963 seconds.
-    Reads Processed:       95514    13.72k reads/sec
-    Bases Processed:       1389m    199.54m bases/sec
+    module load bbmap/37.36
 
-We can see that we have 95,514 reads and roughly 1.4Gbp in total. This command also prints a histogram of read lengths to the file "HiFi_length.txt". Let's open it up and have a look in R.
+    srun reformat.sh in1=/home/taller-2019/Workshop_materials/SRR10971019.fastq lhist=HiFi_length.txt
+
+::: callout-tip
+## Remember to run the SLURM script with "sbatch"!
+:::
+
+This should only take a minute or two to run, and you can then view the resulting output file, like this:
+
+    less reformat_result.txt
+
+We can see that we have 95,514 reads and roughly 1.4Gbp in total. This command also prints a histogram of read lengths to the file "HiFi_length.txt". You can try downloading this file to your local computer using a command like.
+
+    scp username@kabre.cenat.ac.cr:~/HiFi_length.txt ~/Desktop
+
+You can then try to plot this data using R, if you are interested in visualisation.
 
     ##R code
     library(ggplot2)
     HiFi_hist <- read.table("HiFi_length.txt")
     ggplot(data=HiFi_hist,aes(x=V1,y=V2)) + geom_col()
 
+A very useful initial QC procedure to follow is to break down sequencing reads into short (e.g. 21 nucleotide) overlapping sub-strings called *k-*mers (in this case we would call them 21-mers) to allow us to get a more accurate assessment of genome properties. *k-*mers are useful because some sequencing reads contain errors. By breaking down reads into sub-strings, we can distinguish technical errors from biological sequence based on the number of times they appear in the dataset (error k-mers hould be very rare, whereas "real" biological data should appear at a frequency dependent on the sequencing coverage).
+
 Let's have a look at the k-mer content to find out more about our dataset and our organism. Here's how you could generate a 21-mer histograms for the data we downloaded earlier, using the program jellyfish.
 
     ##Bash/command line code
-    kat_jellyfish count -t 20 -m21 -C -s 10G -o ecoli_HiSeqX.jf21 SRR18106304.fastq
-    kat_jellyfish histo -o ecoli_HiSeqX.histo ecoli_HiSeqX.jf21
+    jellyfish count -t 20 -m21 -C -s 10G -o ecoli_HiSeqX.jf21 SRR18106304.fastq
+    jellyfish histo -o ecoli_HiSeqX.histo ecoli_HiSeqX.jf21
 
     ##R code
     library(ggplot2)
@@ -232,9 +268,7 @@ We can also feed our data into another program ([genomescope](https://www.nature
 
 ![](images/Screenshot%202022-10-14%20at%2015.10.10.png){fig-align="center"}
 
-#### 3.1 Questions
-
-#### Q3: For dataset X, how much total sequencing data do we have?
+#### Q3: For each dataset:
 
 A. How much total sequencing data do we have for each dataset?
 
@@ -250,7 +284,7 @@ Ploidy refers to the number of chromosome copies that an organism has. A single 
 
 It is important to note that different ploidy states can exist within an organism - In humans for example, the autosomes are most often diploid, the mitochondrial genome is most often haploid, and the X chromosome can be either haploid or diploid.
 
-In addition, ploidy levels can vary between different tissues. Some cells found in the liver are normally polyploid and karyotype alterations have also been linked to cancerous tissues. In another case, Honey bees can have entirely haploid autosomes (which initiates male development) or diploid autosomes (which initiates female development) (Aamidor *et al.,* 2018). **Choosing which individual and tissue to sample for whole genome sequencing is a crucial decision!**
+In addition, ploidy levels can vary between different tissues. Some cells found in the liver are normally polyploid and karyotype alterations have also been linked to cancerous tissues. In another case, Honey bees can have entirely haploid autosomes (which initiates male development) or diploid autosomes (which initiates female development). **Choosing which individual and tissue to sample for whole genome sequencing is a crucial decision!**
 
 ##### Figure 2: k-mer histograms showing the characteristic double peak of a diploid organism, with the homozygous peak region indicated in green, the heterozygous peak region indicated in blue and the error region peak indicated in red. Notice the difference in the error region, between the Illumina and the PacBio CLR read data.
 
@@ -395,8 +429,6 @@ fig
 
 ```
 
-#### 3.2 Questions
-
 #### Q4:
 
 A. Our datasets represent a genome with what type of ploidy?
@@ -422,7 +454,7 @@ Here's a program called [mash](https://genomebiology.biomedcentral.com/articles/
 
 A. Do any of our datasets contain contaminant DNA?
 
-B. Should you filter out contaminant DNA before or after assembly?
+B. Should you remove out contaminant sequencing reads before or after assembly?
 
 ## 4. Assembly
 
@@ -655,7 +687,7 @@ plot.igraph(g, edge.arrow.size = 0.5)
 
 ```
 
-Let's have a go at running an OLC assembly using long high quality HiFi reads, using the program [hifiasm](https://www.nature.com/articles/s41592-020-01056-5). This program is able to utilise the high quality and long read lengths of HiFi data, to produce some of the highest quality genome reconstructions available, often without supplementary data.
+Let's have a go at running an OLC assembly using long high quality HiFi reads, using the program [hifiasm](https://www.nature.com/articles/s41592-020-01056-5). This program is able to utilise the high quality and long read lengths of HiFi data, to produce some of the highest quality genome reconstructions available, often without supplementary data (like [HiC](https://www.biorxiv.org/content/10.1101/2022.06.09.495093v1.full.pdf)).
 
     ##Bash/command line code
     hifiasm -t 16 SRR10971019.fastq -o hifi_ecoli
