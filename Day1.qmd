@@ -139,8 +139,11 @@ Let's have a look at some public data from the Sequence Read Archive (SRA). We'l
 
 Typically you could download the reads associated with an SRA accession using the commands below, but it can take some time, so today you can access pre-downloaded data from the path /home/taller-2019/Workshop_materials/.
 
+    # Illumina HiseqX
     fasterq-dump SRR18106304
+    # PacBio HiFi
     fasterq-dump SRR10971019
+    # Oxford Nanopore R9
     fasterq-dump ERR1674581
 
 These commands should download the "fastq" formatted data from these experiments, if you want to find out more about the experiment you can search the accession code (e.g. SRR18106304) on https://www.ncbi.nlm.nih.gov/.
@@ -695,7 +698,7 @@ Let's have a go at running an OLC assembly using long high quality HiFi reads, u
 Let's also have a go at running an OLC assembly using long nanopore (nanopore chemistry version 10.3) reads, using the program [canu](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5411767/).
 
     ##Bash/command line code
-    ~/bin/canu-1.9/Linux-amd64/bin/canu -p ecoli -d ecoli-oxford useGrid=false genomeSize=4.8m -nanopore-raw ERR3890216.fastq
+    canu -p ecoli -d ecoli-oxford useGrid=false genomeSize=4.8m -nanopore-raw ERR3890216.fastq
 
 #### Q6:
 
