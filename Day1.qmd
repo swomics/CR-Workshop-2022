@@ -267,7 +267,7 @@ Let's have a look at the k-mer content to find out more about our dataset and ou
 We can also feed our data into another program ([genomescope](https://www.nature.com/articles/s41467-020-14998-3)), which is able to fit a model to the histogram and calculate some predictions about the genome properties, such as genome size, heterozygosity (if present), repetitiveness and sequencing coverage.
 
     ##Bash/command line code
-    genomescope.R ecoli_HiSeqX.histo 21 150 hiseq_genomescope
+    /home/taller-2019/Workshop_materials/genomescope.R ecoli_HiSeqX.histo 21 150 hiseq_genomescope
 
 ![](images/Screenshot%202022-10-14%20at%2015.10.10.png){fig-align="center"}
 
