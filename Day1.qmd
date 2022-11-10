@@ -478,7 +478,7 @@ fastqc is designed to indicate when data doesn't meet theoretical expectations, 
 
 If we suspected that there might be some adapter contamination based on the fastqc results, we could use a trimming program to try and reduce the problem. Here is an example.
 
-    bbduk.sh in=SRR18106304.fastq out=SRR18106304_clean.fastq ref=/pub66/samw/bin/miniconda3/envs/CR_workshop/opt/bbmap-39.00-0/resources/adapters.fa ktrim=l k=23 mink=11 hdist=1
+    bbduk.sh in=SRR18106304.fastq out=SRR18106304_clean.fastq ref=/home/taller-2019/Workshop_materials/adapters.fa ktrim=l k=23 mink=11 hdist=1
 
 -   ref = the fasta file of adapter sequences you want to remove
 
