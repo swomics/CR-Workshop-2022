@@ -36,9 +36,21 @@ Both Canu and Spades should have produced directories full of various files. Hif
 
 ### 5.1. Assembly graphs and genome size.
 
-We can visualise the assembly graphs for these three different datasets using the software Bandage. We use a specific file-type produced by some (but not all) genome assembly programs, known as a Graphical Fragment Assembly (.gfa) file. This format documents stretches of assembles sequence and also the relationship between contiguous runs, that may have multiple valid paths due to the presence of repetitive sequence or heterozygosity.
+We can visualise the assembly graphs for these three different datasets using the software Bandage. We use a specific file-type produced by some (but not all) genome assembly programs, known as a Graphical Fragment Assembly (.gfa) file. This format documents stretches of assembled sequence and also the relationship between contiguous runs, that may have multiple valid paths due to the presence of repetitive sequence or heterozygosity.
 
-You can load bandage by:
+To use bandage in Window:
+
+1.  Use "scp" to copy the gfa files from the three assemblies to your local machine.
+
+2.  Download the program from this link https://github.com/rrwick/Bandage/releases/download/v0.8.1/Bandage_Windows_v0_8\_1.zip
+
+3.  Open the zip archive and double click on the Bandage.exe file.
+
+4.  A window should open.
+
+5.  You can click File, then load graph, and you should be able to select a gfa file from one of your assemblies.
+
+You can load bandage in Linux by:
 
 1.  typing the command "Bandage" into the unix command prompt.
 

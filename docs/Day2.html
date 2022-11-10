@@ -178,8 +178,16 @@ ul.task-list li input[type="checkbox"] {
 <pre><code>awk '/^S/{print "&gt;"$2;print $3}' hifi_ecoli.p_ctg.gfa &gt; hifi_ecoli.p_ctg.fa</code></pre>
 <section id="assembly-graphs-and-genome-size." class="level3">
 <h3 class="anchored" data-anchor-id="assembly-graphs-and-genome-size.">5.1. Assembly graphs and genome size.</h3>
-<p>We can visualise the assembly graphs for these three different datasets using the software Bandage. We use a specific file-type produced by some (but not all) genome assembly programs, known as a Graphical Fragment Assembly (.gfa) file. This format documents stretches of assembles sequence and also the relationship between contiguous runs, that may have multiple valid paths due to the presence of repetitive sequence or heterozygosity.</p>
-<p>You can load bandage by:</p>
+<p>We can visualise the assembly graphs for these three different datasets using the software Bandage. We use a specific file-type produced by some (but not all) genome assembly programs, known as a Graphical Fragment Assembly (.gfa) file. This format documents stretches of assembled sequence and also the relationship between contiguous runs, that may have multiple valid paths due to the presence of repetitive sequence or heterozygosity.</p>
+<p>To use bandage in Window:</p>
+<ol type="1">
+<li><p>Use “scp” to copy the gfa files from the three assemblies to your local machine.</p></li>
+<li><p>Download the program from this link https://github.com/rrwick/Bandage/releases/download/v0.8.1/Bandage_Windows_v0_8_1.zip</p></li>
+<li><p>Open the zip archive and double click on the Bandage.exe file.</p></li>
+<li><p>A window should open.</p></li>
+<li><p>You can click File, then load graph, and you should be able to select a gfa file from one of your assemblies.</p></li>
+</ol>
+<p>You can load bandage in Linux by:</p>
 <ol type="1">
 <li><p>typing the command “Bandage” into the unix command prompt.</p></li>
 <li><p>A window should open.</p></li>
