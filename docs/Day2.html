@@ -92,9 +92,6 @@ ul.task-list li input[type="checkbox"] {
   <li class="nav-item">
     <a class="nav-link" href="./Day3.html">Day 3</a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./about.html">About</a>
-  </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
@@ -377,7 +374,7 @@ busco -m genome -i /scratch/ecoli_hiseq_spades/scaffolds.fasta -o Hiseq_busco --
 <h3 class="anchored" data-anchor-id="data-download">8.1. Data download</h3>
 <p>First let’s download the genome data:</p>
 <pre><code>wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/932/276/165/GCF_932276165.1_ilPluXylo3.1/GCF_932276165.1_ilPluXylo3.1_genomic.fna.gz</code></pre>
-<p>and also some RNA seq data. The tissue that RNA is sampled from is very important. RNA composition varies very dramatically between tissues, developmental stages and environmental conditions. This sample comes from an adult moth, and therefore may not contain genes that are very specific to other stages, such as ovum, caterpillar &amp; pupae.</p>
+<p>and also some RNA seq data (It is pre-downloaded in /home/taller-2019/Workshop_materials/). The tissue that RNA is sampled from is very important. RNA composition varies very dramatically between tissues, developmental stages and environmental conditions. This sample comes from an adult moth, and therefore may not contain genes that are very specific to other stages, such as ovum, caterpillar &amp; pupae.</p>
 <pre><code>fasterq-dump SRR12674277</code></pre>
 </section>
 <section id="mapping" class="level3">
@@ -385,10 +382,10 @@ busco -m genome -i /scratch/ecoli_hiseq_spades/scaffolds.fasta -o Hiseq_busco --
 <p>Now in order to map the RNA-seq reads, we first need to index our genome.</p>
 <p>First, decompress the genome:</p>
 <pre><code>gunzip GCF_932276165.1_ilPluXylo3.1_genomic.fna.gz</code></pre>
-<p>You can do this like so:</p>
+<p>Then index like so:</p>
 <pre><code>hisat2-build GCF_932276165.1_ilPluXylo3.1_genomic.fna GCF_932276165.1_ilPluXylo3.1_genomic_hisat2_index</code></pre>
 <p>After a few minutes, we should have our genome indexed and ready for mapping. We can map our RNA-seq reads like this:</p>
-<pre><code>hisat2 -S SRR15042536.sam -p 55 --rna-strandness=FR -x $BOWTIE_INDEX -1 $INPUT_R1 -2 $INPUT_R2 --summary-file $OUTOUT_DIR.summary</code></pre>
+<pre><code>hisat2 -S SRR15042536.sam -p 10 --rna-strandness=FR -x $BOWTIE_INDEX -1 $INPUT_R1 -2 $INPUT_R2 --summary-file $OUTOUT_DIR.summary</code></pre>
 <p>Now we need to sort the resulting file and convert it to a compressed bam format (SAM is the human-readable version). We can also index the resulting bam, for visualisation purposes.</p>
 <pre><code>samtools sort -o SRR15042536.sorted.bam SRR15042536.sam
 samtools index SRR15042536.sorted.bam</code></pre>

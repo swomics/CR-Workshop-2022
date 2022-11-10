@@ -176,7 +176,7 @@ First let's download the genome data:
 
     wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/932/276/165/GCF_932276165.1_ilPluXylo3.1/GCF_932276165.1_ilPluXylo3.1_genomic.fna.gz
 
-and also some RNA seq data. The tissue that RNA is sampled from is very important. RNA composition varies very dramatically between tissues, developmental stages and environmental conditions. This sample comes from an adult moth, and therefore may not contain genes that are very specific to other stages, such as ovum, caterpillar & pupae.
+and also some RNA seq data (It is pre-downloaded in /home/taller-2019/Workshop_materials/). The tissue that RNA is sampled from is very important. RNA composition varies very dramatically between tissues, developmental stages and environmental conditions. This sample comes from an adult moth, and therefore may not contain genes that are very specific to other stages, such as ovum, caterpillar & pupae.
 
     fasterq-dump SRR12674277
 
@@ -188,13 +188,13 @@ First, decompress the genome:
 
     gunzip GCF_932276165.1_ilPluXylo3.1_genomic.fna.gz
 
-You can do this like so:
+Then index like so:
 
     hisat2-build GCF_932276165.1_ilPluXylo3.1_genomic.fna GCF_932276165.1_ilPluXylo3.1_genomic_hisat2_index
 
 After a few minutes, we should have our genome indexed and ready for mapping. We can map our RNA-seq reads like this:
 
-    hisat2 -S SRR15042536.sam -p 55 --rna-strandness=FR -x $BOWTIE_INDEX -1 $INPUT_R1 -2 $INPUT_R2 --summary-file $OUTOUT_DIR.summary
+    hisat2 -S SRR15042536.sam -p 10 --rna-strandness=FR -x $BOWTIE_INDEX -1 $INPUT_R1 -2 $INPUT_R2 --summary-file $OUTOUT_DIR.summary
 
 Now we need to sort the resulting file and convert it to a compressed bam format (SAM is the human-readable version). We can also index the resulting bam, for visualisation purposes.
 
