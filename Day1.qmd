@@ -624,8 +624,12 @@ plot.igraph(g,edge.arrow.size = 0.5)
 
 Let's have a go at running a full de bruijn graph assembly on the Illumina reads, using the program [Spades](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3342519/). This program is able to use k-mers of multiple lengths and combine the resulting graphs for a more contiguous assembly.
 
+::: callout-note
+## You will need to run assembly programs using SLURM scripts. These programs may need large amounts of RAM and CPU, so consider running on the dribe-long partition, with a large amount of time.
+:::
+
     ##Bash/command line code
-    nohup spades.py -s SRR18106304.fastq -o ecoli_hiseq_spades &
+    spades.py -s SRR18106304.fastq -o ecoli_hiseq_spades
 
 ##### OLC 1: The Overlap Layout Consensus (OLC) method can be used which looks for overlaps between whole reads rather than the sub-sampled k-mers. As technological advances have enabled longer read lengths, OLC has become a popular method, since it can bridge repetitive sequences and therefore reconstruct longer contiguous sequences.
 
