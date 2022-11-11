@@ -40,7 +40,7 @@ We can visualise the assembly graphs for these three different datasets using th
 
 To use bandage in Window:
 
-1.  Use "scp" to copy the gfa files from the three assemblies to your local machine.
+1.  Use "scp" to copy the gfa or fastg files from the three assemblies to your local machine.
 
 2.  Download the program from this link https://github.com/rrwick/Bandage/releases/download/v0.8.1/Bandage_Windows_v0_8\_1.zip
 
