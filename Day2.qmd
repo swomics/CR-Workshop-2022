@@ -123,7 +123,13 @@ We are going to run this software with another form of annotation, to help us as
 
 7.  Now you are ready to run quast with your three previously assembled genomes.
 
-    quast -r  GCF_000005845.2_ASM584v2_genomic.fna --circos --gene-finding --output-dir test_quast ./Hifi_ecoli.fa ./ecoli-oxford/ecoli.contigs.fasta ./ecoli_hiseq_spades/scaffolds.fasta  
+::: callout-note
+## module load anaconda2/4.2.0
+
+## module load quast/4.6.0
+:::
+
+    quast -R GCF_000005845.2_ASM584v2_genomic.fna --gene-finding --output-dir test_quast ./Hifi_ecoli.fa ./ecoli-oxford/ecoli.contigs.fasta ./ecoli_hiseq_spades/scaffolds.fasta  
 
 8.  Have a look at the quast report by loading the html file.
 

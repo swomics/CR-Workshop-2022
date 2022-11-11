@@ -246,7 +246,7 @@ busco -m genome -i /scratch/ecoli_hiseq_spades/scaffolds.fasta -o Hiseq_busco --
 <p>Have a browse through the output files in the output folder Hiseq_busco and see if you can find out how complete this genome assembly is. You can also generate an analysis for the other genomes you assembled yesterday (make sure to change the name of the output file!) and compare the results.</p>
 </section>
 <section id="quast-report" class="level3">
-<h3 class="anchored" data-anchor-id="quast-report">5.4. Quast report</h3>
+<h3 class="anchored">5.4. Quast report</h3>
 <p>Before we move on to some other checks we are going to run the program quast, which performs a range of checks for you. We can run this as indicated below. For the purposes of demonstration we will use a reference genome to check our data against, but for a novel genome assembly we would not have this data.</p>
 <p>We are going to run this software with another form of annotation, to help us assess the quality of our genome assemblies. The Glimmer method is specifically designed to detect prokaryotic genes, without the need for additional data.</p>
 <ol type="1">
@@ -262,8 +262,23 @@ busco -m genome -i /scratch/ecoli_hiseq_spades/scaffolds.fasta -o Hiseq_busco --
 <li><p>Right click on the file with the suffix “_genomic.fna.gz” and copy the link.</p></li>
 <li><p>Now in your Unix terminal navigate to your home directory and paste the link after a “wget command”, in the same format as below (make sure to paste in the correct link that you’ve copied).</p>
 <p>wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_example/GCF_example_genomic.fna.gz</p></li>
-<li><p>Now you are ready to run quast with your three previously assembled genomes.</p>
-<p>quast -r GCF_000005845.2_ASM584v2_genomic.fna –circos –gene-finding –output-dir test_quast ./Hifi_ecoli.fa ./ecoli-oxford/ecoli.contigs.fasta ./ecoli_hiseq_spades/scaffolds.fasta</p></li>
+<li><p>Now you are ready to run quast with your three previously assembled genomes.</p></li>
+</ol>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+module load anaconda2/4.2.0
+</div>
+</div>
+<section id="module-load-quast4.6.0" class="level2 callout-body-container callout-body">
+<h2 class="anchored" data-anchor-id="module-load-quast4.6.0">module load quast/4.6.0</h2>
+</section>
+</div>
+<pre><code>quast -R GCF_000005845.2_ASM584v2_genomic.fna --gene-finding --output-dir test_quast ./Hifi_ecoli.fa ./ecoli-oxford/ecoli.contigs.fasta ./ecoli_hiseq_spades/scaffolds.fasta  </code></pre>
+<ol start="8" type="1">
 <li><p>Have a look at the quast report by loading the html file.</p>
 <p>firefox test_quast/report.html</p></li>
 </ol>
