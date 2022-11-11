@@ -50,6 +50,8 @@ To use bandage in Window:
 
 5.  You can click File, then load graph, and you should be able to select a gfa file from one of your assemblies.
 
+6.  Click "Draw graph"
+
 You can load bandage in Linux by:
 
 1.  typing the command "Bandage" into the unix command prompt.
