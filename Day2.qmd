@@ -119,7 +119,7 @@ We are going to run this software with another form of annotation, to help us as
 
 4.  Here you can see a range of information including the genomic sequence files annotations and other associated statistics.
 
-5.  Right click on the file with the suffix "\_genomic.fna.gz" and copy the link.
+5.  Right click on the file that looks like this "GCF_905147045.1_ilAglIoxx1.1_genomic.fna.gz" and copy the link.
 
 6.  Now in your Unix terminal navigate to your home directory and paste the link after a "wget command", in the same format as below (make sure to paste in the correct link that you've copied).
 
