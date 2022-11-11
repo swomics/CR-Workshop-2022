@@ -454,7 +454,7 @@ To save time, you can skip downloading the data, and find it here: /home/taller-
 <p>Then index like so:</p>
 <pre><code>hisat2-build GCF_932276165.1_ilPluXylo3.1_genomic.fna GCF_932276165.1_ilPluXylo3.1_genomic_hisat2_index</code></pre>
 <p>After a few minutes, we should have our genome indexed and ready for mapping. We can map our RNA-seq reads like this:</p>
-<pre><code>hisat2 -S SRR15042536.sam -p 10 --rna-strandness=FR -x $BOWTIE_INDEX -1 $INPUT_R1 -2 $INPUT_R2 --summary-file $OUTOUT_DIR.summary</code></pre>
+<pre><code>hisat2 -S SRR15042536.sam -p 10 --rna-strandness=FR -x GCF_932276165.1_ilPluXylo3.1_genomic_hisat2_index -1 SRR15042536_1.fastq -2 SRR15042536_2.fastq --summary-file SRR15042536.summary</code></pre>
 <p>Now we need to sort the resulting file and convert it to a compressed bam format (SAM is the human-readable version). We can also index the resulting bam, for visualisation purposes.</p>
 <pre><code>samtools sort -o SRR15042536.sorted.bam SRR15042536.sam
 samtools index SRR15042536.sorted.bam</code></pre>
