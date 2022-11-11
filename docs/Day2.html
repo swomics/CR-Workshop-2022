@@ -277,7 +277,7 @@ module load anaconda2/4.2.0
 <h2 class="anchored" data-anchor-id="module-load-quast4.6.0">module load quast/4.6.0</h2>
 </section>
 </div>
-<pre><code>quast -R GCF_000005845.2_ASM584v2_genomic.fna --gene-finding --output-dir test_quast ./Hifi_ecoli.fa ./ecoli-oxford/ecoli.contigs.fasta ./ecoli_hiseq_spades/scaffolds.fasta  </code></pre>
+<pre><code>quast.py -R GCF_000005845.2_ASM584v2_genomic.fna --gene-finding --output-dir test_quast ./Hifi_ecoli.fa ./ecoli-oxford/ecoli.contigs.fasta ./ecoli_hiseq_spades/scaffolds.fasta  </code></pre>
 <ol start="8" type="1">
 <li><p>Have a look at the quast report by loading the html file.</p>
 <p>firefox test_quast/report.html</p></li>
