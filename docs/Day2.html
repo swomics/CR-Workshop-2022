@@ -241,6 +241,19 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="gene-content">5.2. Gene content</h3>
 <p>We can check the quality of an assembly, by checking whether “conserved” genes are present in our assemblies (see paper for details). Using the software BUSCO (Benchmarking Universal Single-Copy Orthologs), we can generate some information about whether genes are present or absent, fragmented across contigs, or whether they’re present in the right number.</p>
 <p>Here we are performing a specific type of genome annotation, which attempts to identify a specific set of conserved genes, that are often only present in a single copy. If some of these genes are missing, it provides some evidence that our genome assembly may not be complete. Alternatively if these genes are found more than once, it provides some evidence that our assembly may have incorrectly duplicated some genomic regions.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+BUSCO is currently not working, an example output will be available in /home/taller-2019/Workshop_materials/
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
 <pre><code>##Bash/command line code 
 busco -m genome -i /scratch/ecoli_hiseq_spades/scaffolds.fasta -o Hiseq_busco --auto-lineage-prok</code></pre>
 <p>Have a browse through the output files in the output folder Hiseq_busco and see if you can find out how complete this genome assembly is. You can also generate an analysis for the other genomes you assembled yesterday (make sure to change the name of the output file!) and compare the results.</p>

@@ -94,6 +94,10 @@ We can check the quality of an assembly, by checking whether "conserved" genes a
 
 Here we are performing a specific type of genome annotation, which attempts to identify a specific set of conserved genes, that are often only present in a single copy. If some of these genes are missing, it provides some evidence that our genome assembly may not be complete. Alternatively if these genes are found more than once, it provides some evidence that our assembly may have incorrectly duplicated some genomic regions.
 
+::: callout-note
+## BUSCO is currently not working, an example output will be available in /home/taller-2019/Workshop_materials/
+:::
+
     ##Bash/command line code 
     busco -m genome -i /scratch/ecoli_hiseq_spades/scaffolds.fasta -o Hiseq_busco --auto-lineage-prok
 
