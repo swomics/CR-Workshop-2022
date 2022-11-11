@@ -200,6 +200,10 @@ Earlier, we used some different annotation methods to model some genes found in 
 
 ### 8.1. Data download
 
+::: callout-note
+## To save time, you can skip downloading the data, and find it here: /home/taller-2019/Workshop_materials/
+:::
+
 First let's download the genome data:
 
     wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/932/276/165/GCF_932276165.1_ilPluXylo3.1/GCF_932276165.1_ilPluXylo3.1_genomic.fna.gz
