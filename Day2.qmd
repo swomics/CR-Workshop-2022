@@ -212,7 +212,7 @@ First let's download the genome data:
 
 and also some RNA seq data (It is pre-downloaded in /home/taller-2019/Workshop_materials/). The tissue that RNA is sampled from is very important. RNA composition varies very dramatically between tissues, developmental stages and environmental conditions. This sample comes from an adult moth, and therefore may not contain genes that are very specific to other stages, such as ovum, caterpillar & pupae.
 
-    fasterq-dump SRR12674277
+    fasterq-dump SRR15042536
 
 ### 8.2. Mapping
 
