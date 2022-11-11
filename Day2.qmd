@@ -243,7 +243,7 @@ Now that we have our mapped reads, we can use the information to produce some ge
 
 You can now have a look at the annotation you've produced as well as the mapped read and see how the program is able to use RNA alignment evidence to build gene models.
 
-First start IGV by inputting the command:
+IGV may not run on Kabre, but you can install it on your local machine ([here](https://software.broadinstitute.org/software/igv/download)), or try the web app ([here](https://igv.org/app/)):
 
     igv
 
