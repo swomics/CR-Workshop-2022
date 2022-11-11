@@ -283,12 +283,18 @@ busco -m genome -i /scratch/ecoli_hiseq_spades/scaffolds.fasta -o Hiseq_busco --
 <i class="callout-icon"></i>
 </div>
 <div class="callout-caption-container flex-fill">
-module load anaconda2/4.2.0
+Note
 </div>
 </div>
-<section id="module-load-quast4.6.0" class="level2 callout-body-container callout-body">
+<div class="callout-body-container callout-body">
+<p>Load both modules for quast</p>
+<section id="module-load-anaconda24.2.0" class="level2">
+<h2 class="anchored" data-anchor-id="module-load-anaconda24.2.0">module load anaconda2/4.2.0</h2>
+</section>
+<section id="module-load-quast4.6.0" class="level2">
 <h2 class="anchored" data-anchor-id="module-load-quast4.6.0">module load quast/4.6.0</h2>
 </section>
+</div>
 </div>
 <pre><code>quast.py -R GCF_000005845.2_ASM584v2_genomic.fna --glimmer --output-dir test_quast ./Hifi_ecoli.fa ./ecoli-oxford/ecoli.contigs.fasta ./ecoli_hiseq_spades/scaffolds.fasta  </code></pre>
 <ol start="8" type="1">

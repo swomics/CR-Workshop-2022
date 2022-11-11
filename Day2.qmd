@@ -128,6 +128,8 @@ We are going to run this software with another form of annotation, to help us as
 7.  Now you are ready to run quast with your three previously assembled genomes.
 
 ::: callout-note
+Load both modules for quast
+
 ## module load anaconda2/4.2.0
 
 ## module load quast/4.6.0
