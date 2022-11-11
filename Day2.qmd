@@ -176,6 +176,10 @@ Using two fasta files we can compute a "paf" alignment file (here I use Aricia a
 
 We can then use an R script to convert this alignment into a dotplot style figure. This type of figure represents a query genome on one axis and a target genome on the other axis. Dots correspond to matches between the two sets of sequences. Some dots will appear across many different chromosomes, these matches are likely to correspond to repetitive sequences such as transposable elements. Other matches form intermittent diagonal lines, and are likely to represent orthologous regions of the genome. When the angles of these diagonal lines change direction, they may represent "inversion" polymorphisms. This type of polymorphism occurs, when a large section of a chromosome flips-over (inverts), due to a breakage and erroneous repair.
 
+::: callout-note
+## You may need to load an R module and install the "optparse" library
+:::
+
     ~/bin/dotPlotly/pafCoordsDotPlotly.R -i ColCroc_AriAges.paf -o ColCroc_AriAges.out -s -t -m 1500 -q 500000
 
 ## 8. RNA-seq gene annotation {data-link="6. More complex genomes"}
