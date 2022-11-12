@@ -108,6 +108,7 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#active-learning-time" id="toc-active-learning-time" class="nav-link active" data-scroll-target="#active-learning-time">Active learning time!</a></li>
+  <li><a href="#if-you-dont-have-your-own-projectdata" id="toc-if-you-dont-have-your-own-projectdata" class="nav-link" data-scroll-target="#if-you-dont-have-your-own-projectdata">11. If you don’t have your own project/data</a></li>
   </ul>
 </nav>
     </div>
@@ -138,15 +139,19 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="active-learning-time" class="level2">
 <h2 class="anchored" data-anchor-id="active-learning-time">Active learning time!</h2>
-<p>In the previous sessions, we’ve had some hands on time running different programs and hopefully gaining an idea of the types of information we can extract from genomic data. Today I would like you to split into groups and attempt to formulate an evolutionary hypothesis that could be investigated using genomic data and the methods we have covered. Alternatively, you may have your own datasets you are working on, this could be an opportunity to ask for advice on how to investigate specific questions you are interested in, and I can try and give advice if possible.</p>
-<p>You’ve learned how to use genomic data to estimate heterozygosity for an organism, how to look for endosymbiotic bacteria, how to find genes and organise them into orthologous groups and trees. You’ve also learned how to compare genomes at a chromosome level. Using the DToL Lepidoptera species, we can think about linking these types of data across multiple species to a <a href="https://catalogue.ceh.ac.uk/documents/5b5a13b6-2304-47e3-9c9d-35237d1232c6">database of ecological traits</a>. This database includes data on long and short term population size trends, host-plant specificity, phenological shifts and more!</p>
-<p>You don’t have to worry about completing the project rigorously, this is simply an opportunity to begin thinking about how genomic data can be applied to ask biological questions</p>
-<p>If you don’t have your own dataset, or find it difficult to think of a question, here are some example hypotheses you could think about:</p>
+<p>In the previous sessions, we’ve had some hands on time running different programs and hopefully gaining an idea of the types of information we can extract from genomic data. Today I would like you work, either alone or in groups, and attempt to formulate an evolutionary hypothesis that could be investigated using genomic data and the methods we have covered. You may have your own datasets you are working on, this could be an opportunity to ask for advice on how to investigate specific questions you are interested in, and I can try and give advice if possible.</p>
+<p>You don’t have to worry about completing a project today, this is simply an opportunity to begin thinking about how genomic data can be applied..</p>
+</section>
+<section id="if-you-dont-have-your-own-projectdata" class="level1">
+<h1>11. If you don’t have your own project/data</h1>
+<p>You’ve learned how to use genomic data to estimate heterozygosity for an organism, how to look for endosymbiotic bacteria, how to find genes and organise them into orthologous groups and trees. You’ve also learned how to compare genome similarity between two species at a chromosome level. Using the DToL Lepidoptera species, we can think about linking these types of data across multiple species to a <a href="https://catalogue.ceh.ac.uk/documents/5b5a13b6-2304-47e3-9c9d-35237d1232c6">database of ecological traits</a>. This database includes data on long and short term population size trends, host-plant specificity, phenological shifts and more!</p>
+<p>We can create a novel dataset, by downloading the ecological_traits.csv found <a href="https://catalogue.ceh.ac.uk/documents/5b5a13b6-2304-47e3-9c9d-35237d1232c6">here</a>. We can then combine this data by adding new columns containing the genomescope k-mer results for the corresponding species found on the <a href="https://tolqc.cog.sanger.ac.uk/">DToL project</a> QC website.</p>
+<p>Here is an example file combining data for some geometrid moths:</p>
+<p>Here are some example biological questions you could think about, and investigate by plotting the different columns in ggplot2:</p>
 <ul>
-<li><p>Do long term population declines predict reduced levels of heterozygosity? (<a href="https://www.pure.ed.ac.uk/ws/portalfiles/portal/105263079/s41467_019_11308_4.pdf">paper</a>)</p></li>
+<li><p>Do long term population declines predict reduced levels of heterozygosity? (<a href="https://www.pure.ed.ac.uk/ws/portalfiles/portal/105263079/s41467_019_11308_4.pdf">paper</a>) (geom_point plot estimated heterozygosity vs.&nbsp;population decline %)</p></li>
+<li><p>Do closely related species have similar genome size? (<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5552920/">paper</a>) (geom_boxplot estimated genome size vs.&nbsp;Family)</p></li>
 <li><p>Do polyphagous species have greater numbers of duplicated genes? (<a href="https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-016-3096-1#Sec2">paper</a>)</p></li>
-<li><p>Do species that pupate in shared environments share similar endosymbionts? (<a href="https://www.pnas.org/doi/10.1073/pnas.2115608119">paper</a>)</p></li>
-<li><p>Do closely related species have similar genome size? (<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5552920/">paper</a>)</p></li>
 </ul>
 <p>You will need to think about how you will gather the genomic and ecological data, and how your resulting graphs might look.</p>
 

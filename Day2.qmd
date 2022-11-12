@@ -25,7 +25,6 @@ Here is a genome browser displaying annotations for an E. coli reference genome,
 <iframe id="iframe_NCBI" width="708" height="354" src="https://www.ncbi.nlm.nih.gov/projects/sviewer/embedded_iframe.html?iframe=iframe_NCBI&id=NC_000913.3&tracks=[key:sequence_track,name:Sequence,display_name:Sequence,id:STD649220238,annots:Sequence,ShowLabel:false,ColorGaps:false,shown:true,order:1][key:gene_model_track,name:Genes,display_name:Genes,id:STD3194982005,annots:Unnamed,Options:MergeAll,CDSProductFeats:false,NtRuler:true,AaRuler:true,HighlightMode:2,ShowLabel:true,shown:true,order:5]&assm_context=GCF_000005845.2&v=1:4641652&c=800080&select=null&slim=0&appname=no_appname" onload="if(!window._SViFrame){_SViFrame=true;window.addEventListener('message',function(e){if(e.origin=='https://www.ncbi.nlm.nih.gov' && !isNaN(e.data.h))document.getElementById(e.data.f).height=parseInt(e.data.h);});}">
 </iframe>
 ```
-
 ## 5. Post-Assembly QC {data-link="5. Post-Assembly QC"}
 
 Now that we have some assembled genomes from the previous session, we will explore them in some more detail. This should help you understand the strengths and weaknesses of the different data-types, and also how to assess different aspects of genome assembly quality.

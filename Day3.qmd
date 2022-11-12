@@ -7,20 +7,24 @@ output: html_document
 
 ## Active learning time!
 
-In the previous sessions, we've had some hands on time running different programs and hopefully gaining an idea of the types of information we can extract from genomic data. Today I would like you to split into groups and attempt to formulate an evolutionary hypothesis that could be investigated using genomic data and the methods we have covered. Alternatively, you may have your own datasets you are working on, this could be an opportunity to ask for advice on how to investigate specific questions you are interested in, and I can try and give advice if possible.
+In the previous sessions, we've had some hands on time running different programs and hopefully gaining an idea of the types of information we can extract from genomic data. Today I would like you work, either alone or in groups, and attempt to formulate an evolutionary hypothesis that could be investigated using genomic data and the methods we have covered. You may have your own datasets you are working on, this could be an opportunity to ask for advice on how to investigate specific questions you are interested in, and I can try and give advice if possible.
 
-You've learned how to use genomic data to estimate heterozygosity for an organism, how to look for endosymbiotic bacteria, how to find genes and organise them into orthologous groups and trees. You've also learned how to compare genomes at a chromosome level. Using the DToL Lepidoptera species, we can think about linking these types of data across multiple species to a [database of ecological traits](https://catalogue.ceh.ac.uk/documents/5b5a13b6-2304-47e3-9c9d-35237d1232c6). This database includes data on long and short term population size trends, host-plant specificity, phenological shifts and more!
+You don't have to worry about completing a project today, this is simply an opportunity to begin thinking about how genomic data can be applied..
 
-You don't have to worry about completing the project rigorously, this is simply an opportunity to begin thinking about how genomic data can be applied to ask biological questions
+# 11. If you don't have your own project/data
 
-If you don't have your own dataset, or find it difficult to think of a question, here are some example hypotheses you could think about:
+You've learned how to use genomic data to estimate heterozygosity for an organism, how to look for endosymbiotic bacteria, how to find genes and organise them into orthologous groups and trees. You've also learned how to compare genome similarity between two species at a chromosome level. Using the DToL Lepidoptera species, we can think about linking these types of data across multiple species to a [database of ecological traits](https://catalogue.ceh.ac.uk/documents/5b5a13b6-2304-47e3-9c9d-35237d1232c6). This database includes data on long and short term population size trends, host-plant specificity, phenological shifts and more!
 
--   Do long term population declines predict reduced levels of heterozygosity? ([paper](https://www.pure.ed.ac.uk/ws/portalfiles/portal/105263079/s41467_019_11308_4.pdf))
+We can create a novel dataset, by downloading the ecological_traits.csv found [here](https://catalogue.ceh.ac.uk/documents/5b5a13b6-2304-47e3-9c9d-35237d1232c6). We can then combine this data by adding new columns containing the genomescope k-mer results for the corresponding species found on the [DToL project](https://tolqc.cog.sanger.ac.uk/) QC website.
+
+Here is an example file combining data for some geometrid moths:
+
+Here are some example biological questions you could think about, and investigate by plotting the different columns in ggplot2:
+
+-   Do long term population declines predict reduced levels of heterozygosity? ([paper](https://www.pure.ed.ac.uk/ws/portalfiles/portal/105263079/s41467_019_11308_4.pdf)) (geom_point plot estimated heterozygosity vs. population decline %)
+
+-   Do closely related species have similar genome size? ([paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5552920/)) (geom_boxplot estimated genome size vs. Family)
 
 -   Do polyphagous species have greater numbers of duplicated genes? ([paper](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-016-3096-1#Sec2))
-
--   Do species that pupate in shared environments share similar endosymbionts? ([paper](https://www.pnas.org/doi/10.1073/pnas.2115608119))
-
--   Do closely related species have similar genome size? ([paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5552920/))
 
 You will need to think about how you will gather the genomic and ecological data, and how your resulting graphs might look.
