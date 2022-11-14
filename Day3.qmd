@@ -5,26 +5,41 @@ editor: visual
 output: html_document 
 ---
 
-## Active learning time!
+## Active learning
 
-In the previous sessions, we've had some hands on time running different programs and hopefully gaining an idea of the types of information we can extract from genomic data. Today I would like you work, either alone or in groups, and attempt to formulate an evolutionary hypothesis that could be investigated using genomic data and the methods we have covered. You may have your own datasets you are working on, this could be an opportunity to ask for advice on how to investigate specific questions you are interested in, and I can try and give advice if possible.
+In the previous sessions, we've had some hands on time running different programs and hopefully gaining an idea of the types of information we can extract from genomic data. Today I would like you to work either alone or in groups, and attempt to formulate an evolutionary hypothesis that could be investigated using genomic data and the methods we have covered.
 
-You don't have to worry about completing a project today, this is simply an opportunity to begin thinking about how genomic data can be applied..
+You may have your own data sets you are working on, this could be an opportunity to ask for advice on how to investigate specific questions you are interested in, and I can try and give advice if possible. You don't have to worry about completing a project today, this is simply an opportunity to begin thinking about how genomic data can be applied and represented graphically.
 
-# 11. If you don't have your own project/data
+# 11. If you would like to make your own dataset:
 
 You've learned how to use genomic data to estimate heterozygosity for an organism, how to look for endosymbiotic bacteria, how to find genes and organise them into orthologous groups and trees. You've also learned how to compare genome similarity between two species at a chromosome level. Using the DToL Lepidoptera species, we can think about linking these types of data across multiple species to a [database of ecological traits](https://catalogue.ceh.ac.uk/documents/5b5a13b6-2304-47e3-9c9d-35237d1232c6). This database includes data on long and short term population size trends, host-plant specificity, phenological shifts and more!
 
-We can create a novel dataset, by downloading the ecological_traits.csv found [here](https://catalogue.ceh.ac.uk/documents/5b5a13b6-2304-47e3-9c9d-35237d1232c6). We can then combine this data by adding new columns containing the genomescope k-mer results for the corresponding species found on the [DToL project](https://tolqc.cog.sanger.ac.uk/) QC website.
+We can create a novel dataset, by downloading the ecological_traits.csv found [here](https://catalogue.ceh.ac.uk/documents/5b5a13b6-2304-47e3-9c9d-35237d1232c6). We can then combine this data by adding new columns containing the genomescope k-mer results for the corresponding species found on the [DToL project](https://tolqc.cog.sanger.ac.uk/) QC website ([here is an example species](https://tolqc.cog.sanger.ac.uk/darwin/insects/Operophtera_brumata/)).
 
-Here is an example file combining data for some geometrid moths:
+Here is an example file I created that combines data for some geometrid moths: https://raw.githubusercontent.com/swomics/CR-Workshop-2022/main/docs/Resources/ecological_traits_genome_example.csv
 
-Here are some example biological questions you could think about, and investigate by plotting the different columns in ggplot2:
+There are various biological questions you could think about, and investigate by plotting the different columns in ggplot2:
 
 -   Do long term population declines predict reduced levels of heterozygosity? ([paper](https://www.pure.ed.ac.uk/ws/portalfiles/portal/105263079/s41467_019_11308_4.pdf)) (geom_point plot estimated heterozygosity vs. population decline %)
 
 -   Do closely related species have similar genome size? ([paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5552920/)) (geom_boxplot estimated genome size vs. Family)
 
--   Do polyphagous species have greater numbers of duplicated genes? ([paper](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-016-3096-1#Sec2))
+-   Can differences in genome size be explained by differences in repeat content? ([paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4450375/)) (geom_point estimated genome size vs. repeat percentage x genome size)
 
-You will need to think about how you will gather the genomic and ecological data, and how your resulting graphs might look.
+This is the type of R code you could use to investigate the data visually, you may also want to perform statistical tests, if you are familiar with this (feel free to ask about this).
+
+    library(ggplot2)
+    data <- read.csv("~/Desktop/ecological_traits_genome_example.csv")
+
+    ggplot(data=data,aes(x=pacbio_estimated_heterozygosity_percent,y=abundance_trend_gb)) + geom_point()
+
+    ggplot(data=data,aes(x=pacbio_estimated_heterozygosity_percent,y=specificity)) + geom_boxplot()
+
+Have a go at gathering your own combined dataset using genomic and ecological data and try to reflect critically on the questions you could answer with your selection of organisms, how many samples you might need, and whether they need to come from different families or not. Some species in the ecological_traits data set have not yet been processed by the DToL project, so it may be easier to browse lepidopteran species on the DToL site first, and search for them in the ecological data.
+
+# 12. If you would like to use a data set you already have:
+
+Please ask me! I may not have the specific expertise to help, but I would be interested to hear about your projects regardless.
+
+Some workshop participants have mentioned they are interested in visualising specific genes within specific bacterial species they are studying. Others have mentioned they are interested in comparing gene clusters between related species. If this is you, please have a look at the excellent [gggenomes](https://thackl.github.io/gggenomes/articles/emales.html) program, which I have used to plot genomic data. We have already covered some of the programs you can use to create these plots (e.g. minimap2 for the alignment and miniprot/glimmer for gene annotations).
