@@ -163,7 +163,7 @@ So far we have only considered a haploid bacterial genome, with a very small ove
 We are going to download some datasets, you may choose two species from the following list to align:
 
 | Name (common)                               | NCBI RefSeq accession                                                                                     |
-|---------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+|----------------------|--------------------------------------------------|
 | Melitaea cinxia (Glanville fritillary)      | [GCF_905220565.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/220/565/GCF_905220565.1_ilMelCinx1.1/) |
 | Pararge aegeria (specked wood butterfly)    | [GCF_905163445.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/163/445/GCF_905163445.1_ilParAegt1.1/) |
 | Nymphalis io (European peacock)             | [GCF_905147045.1](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/905/147/045/GCF_905147045.1_ilAglIoxx1.1/) |
@@ -237,6 +237,10 @@ Now we need to sort the resulting file and convert it to a compressed bam format
 ### 8.3. Transcript assembly
 
 Now that we have our mapped reads, we can use the information to produce some gene models.
+
+::: callout-note
+## For stringtie you will need module load gcc/11.1.0 and Stringtie/1.3.4
+:::
 
     stringtie -o SRR15042536.gff SRR15042536.sorted.bam
 
