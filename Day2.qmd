@@ -248,7 +248,11 @@ You can now have a look at the annotation you've produced as well as the mapped 
 
 IGV may not run on Kabre, but you can install it on your local machine ([here](https://software.broadinstitute.org/software/igv/download)), or try the web app ([here](https://igv.org/app/)):
 
-    igv
+For the web app you first need to generate an index file using the samtools program, like this:
+
+    samtools faidx example_genome.fa
+
+You then need to download both the .fa and the .fai (produced by the previous command) to your local computer. To load this genome in the web app, you must select both files when loading the genome.
 
 This should open a new GUI window. First load your genome, by clicking Genomes -\> Load Genome From File. Then you can load the sorted.bam file and the gff, by clicking File -\> Load from file.
 

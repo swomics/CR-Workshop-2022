@@ -478,7 +478,9 @@ For stringtie you will need module load gcc/11.1.0 and Stringtie/1.3.4
 <pre><code>stringtie -o SRR15042536.gff SRR15042536.sorted.bam</code></pre>
 <p>You can now have a look at the annotation you’ve produced as well as the mapped read and see how the program is able to use RNA alignment evidence to build gene models.</p>
 <p>IGV may not run on Kabre, but you can install it on your local machine (<a href="https://software.broadinstitute.org/software/igv/download">here</a>), or try the web app (<a href="https://igv.org/app/">here</a>):</p>
-<pre><code>igv</code></pre>
+<p>For the web app you first need to generate an index file using the samtools program, like this:</p>
+<pre><code>samtools faidx example_genome.fa</code></pre>
+<p>You then need to download both the .fa and the .fai (produced by the previous command) to your local computer. To load this genome in the web app, you must select both files when loading the genome.</p>
 <p>This should open a new GUI window. First load your genome, by clicking Genomes -&gt; Load Genome From File. Then you can load the sorted.bam file and the gff, by clicking File -&gt; Load from file.</p>
 </section>
 </section>
